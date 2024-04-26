@@ -1,0 +1,2037 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Keep aspect ratio if custom image width or height is specified
+    \setkeys{Gin}{keepaspectratio}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+
+    \usepackage{iftex}
+    \ifPDFTeX
+        \usepackage[T1]{fontenc}
+        \IfFileExists{alphabeta.sty}{
+              \usepackage{alphabeta}
+          }{
+              \usepackage[mathletters]{ucs}
+              \usepackage[utf8x]{inputenc}
+          }
+    \else
+        \usepackage{fontspec}
+        \usepackage{unicode-math}
+    \fi
+
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage{array}     % table support for pandoc >= 2.11.3
+    \usepackage{calc}      % table minipage width calculation for pandoc >= 2.11.1
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{soul}      % strikethrough (\st) support for pandoc >= 3.0.0
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+
+
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{monet\_imitation-cyclegan\_no\_outputs}
+    
+    
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@ges}{\let\PY@bf=\textbf\let\PY@it=\textit}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb.
+    \makeatletter
+        \newbox\Wrappedcontinuationbox
+        \newbox\Wrappedvisiblespacebox
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}}
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}}
+        \newcommand*\Wrappedcontinuationindent {3ex }
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox}
+        % Take advantage of the already applied Pygments mark-up to insert
+        % potential linebreaks for TeX processing.
+        %        {, <, #, %, $, ' and ": go to next line.
+        %        _, }, ^, &, >, - and ~: stay at end of broken line.
+        % Use of \textquotesingle for straight quote.
+        \newcommand*\Wrappedbreaksatspecials {%
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}%
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}%
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}%
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}%
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}%
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}%
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}%
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}%
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}%
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}%
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}%
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}%
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}%
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}%
+        }
+        % Some characters . , ; ? ! / are not pygmentized.
+        % This macro makes them "active" and they will insert potential linebreaks
+        \newcommand*\Wrappedbreaksatpunct {%
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}%
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}%
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}%
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}%
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}%
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}%
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}%
+            \catcode`\.\active
+            \catcode`\,\active
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active
+            \lccode`\~`\~
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        {\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \section{CycleGAN for Monet
+Imitation}\label{cyclegan-for-monet-imitation}
+
+The purpose of this project is to create a Generative Adversarial
+Network to create imitation Monet paintings from photos, or in other
+words add Monet style to a photo. The GAN will consist of a generator
+and descriminator. The generator will create Monet Style photos and use
+the descriminator to learn. While the generator creates images the
+descriminator will determine if they are real or fake. The GAN need to
+create 7,000-10,000 images. The challenge is scored with
+Memorization-informed Fréchet Inception Distance(MiFID), which is a
+modification from Fréchet Inception Distance (FID). These are commonly
+used metrics for evaluating GANs, where a lower score is better.
+
+This notebook utilizes a CycleGAN architecture to add Monet-style to
+photos. This is the kaggle competition page:
+https://www.kaggle.com/competitions/gan-getting-started
+
+CycleGAN is a mothod that can capture the characteristics of one image
+domain and figure out how these characteristics could be translated into
+another image domain in the absence of paired training examples, using
+cycle-consistent adversarial networks. See
+\href{https://www.tensorflow.org/tutorials/generative/cyclegan}{TensorFlow}
+and \href{https://keras.io/examples/generative/cyclegan/}{Keras}
+CycleGAN documentation pages.
+
+Github here: https://github.com/emhi6821/Week5\_GAN/tree/main
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{22}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{PIL}
+\PY{k+kn}{import} \PY{n+nn}{shutil}
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+\PY{k+kn}{import} \PY{n+nn}{tensorflow} \PY{k}{as} \PY{n+nn}{tf}
+\PY{k+kn}{from} \PY{n+nn}{tensorflow} \PY{k+kn}{import} \PY{n}{keras}
+\PY{k+kn}{from} \PY{n+nn}{tensorflow}\PY{n+nn}{.}\PY{n+nn}{keras} \PY{k+kn}{import} \PY{n}{layers}
+\PY{k+kn}{import} \PY{n+nn}{tensorflow\PYZus{}addons} \PY{k}{as} \PY{n+nn}{tfa}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{glob}
+\PY{k+kn}{from} \PY{n+nn}{keras}\PY{n+nn}{.}\PY{n+nn}{callbacks} \PY{k+kn}{import} \PY{n}{CSVLogger}
+
+
+\PY{k}{try}\PY{p}{:}
+    \PY{n}{tpu} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{distribute}\PY{o}{.}\PY{n}{cluster\PYZus{}resolver}\PY{o}{.}\PY{n}{TPUClusterResolver}\PY{p}{(}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Device:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{tpu}\PY{o}{.}\PY{n}{master}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+    \PY{n}{tf}\PY{o}{.}\PY{n}{config}\PY{o}{.}\PY{n}{experimental\PYZus{}connect\PYZus{}to\PYZus{}cluster}\PY{p}{(}\PY{n}{tpu}\PY{p}{)}
+    \PY{n}{tf}\PY{o}{.}\PY{n}{tpu}\PY{o}{.}\PY{n}{experimental}\PY{o}{.}\PY{n}{initialize\PYZus{}tpu\PYZus{}system}\PY{p}{(}\PY{n}{tpu}\PY{p}{)}
+    \PY{n}{strategy} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{distribute}\PY{o}{.}\PY{n}{experimental}\PY{o}{.}\PY{n}{TPUStrategy}\PY{p}{(}\PY{n}{tpu}\PY{p}{)}
+\PY{k}{except}\PY{p}{:}
+    \PY{n}{strategy} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{distribute}\PY{o}{.}\PY{n}{get\PYZus{}strategy}\PY{p}{(}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Number of replicas:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{strategy}\PY{o}{.}\PY{n}{num\PYZus{}replicas\PYZus{}in\PYZus{}sync}\PY{p}{)}
+
+\PY{n}{AUTOTUNE} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{data}\PY{o}{.}\PY{n}{experimental}\PY{o}{.}\PY{n}{AUTOTUNE}
+    
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{tf}\PY{o}{.}\PY{n}{\PYZus{}\PYZus{}version\PYZus{}\PYZus{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Number of replicas: 1
+2.15.1
+    \end{Verbatim}
+
+    \section{Load in the data \& EDA}\label{load-in-the-data-eda}
+
+I start by loading in th photo dataset and Monet dataset fileames using
+glob for .tfrec files.
+
+The competition says that the images are already sized to 256x256. Below
+I create a decoder for the images in the TFRecord files. These images
+are RGB images so the channel is set to 3. The images get scaled from -1
+to 1. The GAN does not require labels so I get only return the images
+and get rid of the labels and ids.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{top\PYZus{}path} \PY{o}{=} \PY{l+s+sa}{r}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{/Users/emilyhill/Documents/WEEK5\PYZus{}GANS/gan\PYZhy{}getting\PYZhy{}started}\PY{l+s+s2}{\PYZdq{}}
+\PY{n}{monet\PYZus{}tfrec} \PY{o}{=} \PY{n}{glob}\PY{o}{.}\PY{n}{glob}\PY{p}{(}\PY{n+nb}{str}\PY{p}{(}\PY{n}{top\PYZus{}path} \PY{o}{+} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/monet\PYZus{}tfrec/*.tfrec}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Monet TFRecord Files:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{monet\PYZus{}tfrec}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{photo\PYZus{}tfrec} \PY{o}{=} \PY{n}{glob}\PY{o}{.}\PY{n}{glob}\PY{p}{(}\PY{n+nb}{str}\PY{p}{(}\PY{n}{top\PYZus{}path} \PY{o}{+} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{/photo\PYZus{}tfrec/*.tfrec}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Photo TFRecord Files:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{photo\PYZus{}tfrec}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Monet TFRecord Files: 5
+Photo TFRecord Files: 20
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{IMAGE\PYZus{}SIZE} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{256}\PY{p}{,} \PY{l+m+mi}{256}\PY{p}{]}
+
+\PY{k}{def} \PY{n+nf}{decode\PYZus{}image}\PY{p}{(}\PY{n}{image}\PY{p}{)}\PY{p}{:}
+    \PY{n}{image} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{image}\PY{o}{.}\PY{n}{decode\PYZus{}jpeg}\PY{p}{(}\PY{n}{image}\PY{p}{,} \PY{n}{channels}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{)}
+    \PY{n}{image} \PY{o}{=} \PY{p}{(}\PY{n}{tf}\PY{o}{.}\PY{n}{cast}\PY{p}{(}\PY{n}{image}\PY{p}{,} \PY{n}{tf}\PY{o}{.}\PY{n}{float32}\PY{p}{)} \PY{o}{/} \PY{l+m+mf}{127.5}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}
+    \PY{n}{image} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{n}{image}\PY{p}{,} \PY{p}{[}\PY{o}{*}\PY{n}{IMAGE\PYZus{}SIZE}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{]}\PY{p}{)}
+    \PY{k}{return} \PY{n}{image}
+
+\PY{k}{def} \PY{n+nf}{read\PYZus{}tfrecord}\PY{p}{(}\PY{n}{example}\PY{p}{)}\PY{p}{:}
+    \PY{n}{tfrecord\PYZus{}format} \PY{o}{=} \PY{p}{\PYZob{}}
+        \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{image\PYZus{}name}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{tf}\PY{o}{.}\PY{n}{io}\PY{o}{.}\PY{n}{FixedLenFeature}\PY{p}{(}\PY{p}{[}\PY{p}{]}\PY{p}{,} \PY{n}{tf}\PY{o}{.}\PY{n}{string}\PY{p}{)}\PY{p}{,}
+        \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{image}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{tf}\PY{o}{.}\PY{n}{io}\PY{o}{.}\PY{n}{FixedLenFeature}\PY{p}{(}\PY{p}{[}\PY{p}{]}\PY{p}{,} \PY{n}{tf}\PY{o}{.}\PY{n}{string}\PY{p}{)}\PY{p}{,}
+        \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{target}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{tf}\PY{o}{.}\PY{n}{io}\PY{o}{.}\PY{n}{FixedLenFeature}\PY{p}{(}\PY{p}{[}\PY{p}{]}\PY{p}{,} \PY{n}{tf}\PY{o}{.}\PY{n}{string}\PY{p}{)}
+    \PY{p}{\PYZcb{}}
+    \PY{n}{example} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{io}\PY{o}{.}\PY{n}{parse\PYZus{}single\PYZus{}example}\PY{p}{(}\PY{n}{example}\PY{p}{,} \PY{n}{tfrecord\PYZus{}format}\PY{p}{)}
+    \PY{n}{image} \PY{o}{=} \PY{n}{decode\PYZus{}image}\PY{p}{(}\PY{n}{example}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{image}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+    \PY{k}{return} \PY{n}{image}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Next, I create a function to extract the images from the TFRecord files
+and load the monet and photo datasets into tensorflow datasets.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{load\PYZus{}dataset}\PY{p}{(}\PY{n}{filenames}\PY{p}{,} \PY{n}{labeled}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{ordered}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{p}{:}
+    \PY{n}{dataset} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{data}\PY{o}{.}\PY{n}{TFRecordDataset}\PY{p}{(}\PY{n}{filenames}\PY{p}{)}
+    \PY{n}{dataset} \PY{o}{=} \PY{n}{dataset}\PY{o}{.}\PY{n}{map}\PY{p}{(}\PY{n}{read\PYZus{}tfrecord}\PY{p}{,} \PY{n}{num\PYZus{}parallel\PYZus{}calls}\PY{o}{=}\PY{n}{AUTOTUNE}\PY{p}{)}
+    \PY{k}{return} \PY{n}{dataset}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{monet\PYZus{}ds} \PY{o}{=} \PY{n}{load\PYZus{}dataset}\PY{p}{(}\PY{n}{monet\PYZus{}tfrec}\PY{p}{,} \PY{n}{labeled}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{o}{.}\PY{n}{batch}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{photo\PYZus{}ds} \PY{o}{=} \PY{n}{load\PYZus{}dataset}\PY{p}{(}\PY{n}{photo\PYZus{}tfrec}\PY{p}{,} \PY{n}{labeled}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{o}{.}\PY{n}{batch}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Monet Images: }\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{monet\PYZus{}ds}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Photo Images: }\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{photo\PYZus{}ds}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Monet Images:  300
+Photo Images:  7038
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{bar}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Monet}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Photo}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{n+nb}{len}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{monet\PYZus{}ds}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n+nb}{list}\PY{p}{(}\PY{n}{photo\PYZus{}ds}\PY{p}{)}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Full Image Data Distribution}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_8_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Let's visualize 5 photo and Monet examples. We can also confirm that the
+photos are 256x256
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{for} \PY{n}{example\PYZus{}monet}\PY{p}{,} \PY{n}{example\PYZus{}photo} \PY{o+ow}{in} \PY{n+nb}{zip}\PY{p}{(}\PY{n}{monet\PYZus{}ds}\PY{o}{.}\PY{n}{take}\PY{p}{(}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{,} \PY{n}{photo\PYZus{}ds}\PY{o}{.}\PY{n}{take}\PY{p}{(}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{}PLot Monet}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{l+m+mi}{122}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Monet}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{example\PYZus{}monet}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{*} \PY{l+m+mf}{0.5} \PY{o}{+} \PY{l+m+mf}{0.5}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{}Plot Photo}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{subplot}\PY{p}{(}\PY{l+m+mi}{121}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Photo}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{example\PYZus{}photo}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{*} \PY{l+m+mf}{0.5} \PY{o}{+} \PY{l+m+mf}{0.5}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_10_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_10_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_10_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_10_3.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_10_4.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \section{Generator}\label{generator}
+
+The CycleGAN below uses a UNET architecture. The generator is created
+with the downsample and upsample methods. The downsample function
+reduces the width and height of the image by the stride, or the step the
+filter takes. With a stride of 2, the filter is applied to every other
+pixel, which reduces the weight and height by 2. Upsample does the
+opposite of downsample and increases the height and width of the of the
+image by the stride. I use the tensorflow.keras layers Conv2D and
+Conv2DTranspose, which does basically the opposite of a Conv2D layer,
+for these functions.
+
+Instance normalization, which normalizes all features of one channel, is
+used instead of batch normalization. The Groupsize is equal to the
+channel size. According to tensorflow its accuracy is more stable than
+batch normalization in a range of small batch sizes with an appropriate
+learning rate which is adjusted linearly with batch size.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Weights initializer for the layers.}
+\PY{n}{kernel\PYZus{}init} \PY{o}{=} \PY{n}{keras}\PY{o}{.}\PY{n}{initializers}\PY{o}{.}\PY{n}{RandomNormal}\PY{p}{(}\PY{n}{mean}\PY{o}{=}\PY{l+m+mf}{0.0}\PY{p}{,} \PY{n}{stddev}\PY{o}{=}\PY{l+m+mf}{0.02}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} Gamma initializer for instance normalization.}
+\PY{n}{gamma\PYZus{}init} \PY{o}{=} \PY{n}{keras}\PY{o}{.}\PY{n}{initializers}\PY{o}{.}\PY{n}{RandomNormal}\PY{p}{(}\PY{n}{mean}\PY{o}{=}\PY{l+m+mf}{0.0}\PY{p}{,} \PY{n}{stddev}\PY{o}{=}\PY{l+m+mf}{0.02}\PY{p}{)}
+
+\PY{k}{class} \PY{n+nc}{ReflectionPadding2D}\PY{p}{(}\PY{n}{layers}\PY{o}{.}\PY{n}{Layer}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Implements Reflection Padding as a layer.}
+\PY{l+s+sd}{    Args:}
+\PY{l+s+sd}{        padding(tuple): Amount of padding for the}
+\PY{l+s+sd}{        spatial dimensions.}
+\PY{l+s+sd}{    Returns:}
+\PY{l+s+sd}{        A padded tensor with the same type as the input tensor.}
+\PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{padding}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,} \PY{o}{*}\PY{o}{*}\PY{n}{kwargs}\PY{p}{)}\PY{p}{:}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{padding} \PY{o}{=} \PY{n+nb}{tuple}\PY{p}{(}\PY{n}{padding}\PY{p}{)}
+        \PY{n+nb}{super}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{o}{*}\PY{o}{*}\PY{n}{kwargs}\PY{p}{)}
+
+    \PY{k}{def} \PY{n+nf}{call}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{input\PYZus{}tensor}\PY{p}{,} \PY{n}{mask}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
+        \PY{n}{padding\PYZus{}width}\PY{p}{,} \PY{n}{padding\PYZus{}height} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{padding}
+        \PY{n}{padding\PYZus{}tensor} \PY{o}{=} \PY{p}{[}
+            \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+            \PY{p}{[}\PY{n}{padding\PYZus{}height}\PY{p}{,} \PY{n}{padding\PYZus{}height}\PY{p}{]}\PY{p}{,}
+            \PY{p}{[}\PY{n}{padding\PYZus{}width}\PY{p}{,} \PY{n}{padding\PYZus{}width}\PY{p}{]}\PY{p}{,}
+            \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+        \PY{p}{]}
+        \PY{k}{return} \PY{n}{tf}\PY{o}{.}\PY{n}{pad}\PY{p}{(}\PY{n}{input\PYZus{}tensor}\PY{p}{,} \PY{n}{padding\PYZus{}tensor}\PY{p}{,} \PY{n}{mode}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{REFLECT}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+
+\PY{k}{def} \PY{n+nf}{residual\PYZus{}block}\PY{p}{(}
+    \PY{n}{x}\PY{p}{,}
+    \PY{n}{activation}\PY{p}{,}
+    \PY{n}{kernel\PYZus{}initializer}\PY{o}{=}\PY{n}{kernel\PYZus{}init}\PY{p}{,}
+    \PY{n}{kernel\PYZus{}size}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,}
+    \PY{n}{strides}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,}
+    \PY{n}{padding}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{valid}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{n}{gamma\PYZus{}initializer}\PY{o}{=}\PY{n}{gamma\PYZus{}init}\PY{p}{,}
+    \PY{n}{use\PYZus{}bias}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,}
+\PY{p}{)}\PY{p}{:}
+    \PY{n}{dim} \PY{o}{=} \PY{n}{x}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}
+    \PY{n}{input\PYZus{}tensor} \PY{o}{=} \PY{n}{x}
+
+    \PY{n}{x} \PY{o}{=} \PY{n}{ReflectionPadding2D}\PY{p}{(}\PY{p}{)}\PY{p}{(}\PY{n}{input\PYZus{}tensor}\PY{p}{)}
+    \PY{n}{x} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Conv2D}\PY{p}{(}
+        \PY{n}{dim}\PY{p}{,}
+        \PY{n}{kernel\PYZus{}size}\PY{p}{,}
+        \PY{n}{strides}\PY{o}{=}\PY{n}{strides}\PY{p}{,}
+        \PY{n}{kernel\PYZus{}initializer}\PY{o}{=}\PY{n}{kernel\PYZus{}initializer}\PY{p}{,}
+        \PY{n}{padding}\PY{o}{=}\PY{n}{padding}\PY{p}{,}
+        \PY{n}{use\PYZus{}bias}\PY{o}{=}\PY{n}{use\PYZus{}bias}\PY{p}{,}
+    \PY{p}{)}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+    \PY{n}{x} \PY{o}{=} \PY{n}{tfa}\PY{o}{.}\PY{n}{layers}\PY{o}{.}\PY{n}{InstanceNormalization}\PY{p}{(}\PY{n}{gamma\PYZus{}initializer}\PY{o}{=}\PY{n}{gamma\PYZus{}initializer}\PY{p}{)}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+    \PY{n}{x} \PY{o}{=} \PY{n}{activation}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+
+    \PY{n}{x} \PY{o}{=} \PY{n}{ReflectionPadding2D}\PY{p}{(}\PY{p}{)}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+    \PY{n}{x} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Conv2D}\PY{p}{(}
+        \PY{n}{dim}\PY{p}{,}
+        \PY{n}{kernel\PYZus{}size}\PY{p}{,}
+        \PY{n}{strides}\PY{o}{=}\PY{n}{strides}\PY{p}{,}
+        \PY{n}{kernel\PYZus{}initializer}\PY{o}{=}\PY{n}{kernel\PYZus{}initializer}\PY{p}{,}
+        \PY{n}{padding}\PY{o}{=}\PY{n}{padding}\PY{p}{,}
+        \PY{n}{use\PYZus{}bias}\PY{o}{=}\PY{n}{use\PYZus{}bias}\PY{p}{,}
+    \PY{p}{)}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+    \PY{n}{x} \PY{o}{=} \PY{n}{tfa}\PY{o}{.}\PY{n}{layers}\PY{o}{.}\PY{n}{InstanceNormalization}\PY{p}{(}\PY{n}{gamma\PYZus{}initializer}\PY{o}{=}\PY{n}{gamma\PYZus{}initializer}\PY{p}{)}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+    \PY{n}{x} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{add}\PY{p}{(}\PY{p}{[}\PY{n}{input\PYZus{}tensor}\PY{p}{,} \PY{n}{x}\PY{p}{]}\PY{p}{)}
+    \PY{k}{return} \PY{n}{x}
+
+
+\PY{k}{def} \PY{n+nf}{downsample}\PY{p}{(}
+    \PY{n}{x}\PY{p}{,}
+    \PY{n}{filters}\PY{p}{,}
+    \PY{n}{activation}\PY{p}{,}
+    \PY{n}{kernel\PYZus{}initializer}\PY{o}{=}\PY{n}{kernel\PYZus{}init}\PY{p}{,}
+    \PY{n}{kernel\PYZus{}size}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,}
+    \PY{n}{strides}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{,}
+    \PY{n}{padding}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{same}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{n}{gamma\PYZus{}initializer}\PY{o}{=}\PY{n}{gamma\PYZus{}init}\PY{p}{,}
+    \PY{n}{use\PYZus{}bias}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,}
+\PY{p}{)}\PY{p}{:}
+    \PY{n}{x} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Conv2D}\PY{p}{(}
+        \PY{n}{filters}\PY{p}{,}
+        \PY{n}{kernel\PYZus{}size}\PY{p}{,}
+        \PY{n}{strides}\PY{o}{=}\PY{n}{strides}\PY{p}{,}
+        \PY{n}{kernel\PYZus{}initializer}\PY{o}{=}\PY{n}{kernel\PYZus{}initializer}\PY{p}{,}
+        \PY{n}{padding}\PY{o}{=}\PY{n}{padding}\PY{p}{,}
+        \PY{n}{use\PYZus{}bias}\PY{o}{=}\PY{n}{use\PYZus{}bias}\PY{p}{,}
+    \PY{p}{)}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+    \PY{n}{x} \PY{o}{=} \PY{n}{tfa}\PY{o}{.}\PY{n}{layers}\PY{o}{.}\PY{n}{InstanceNormalization}\PY{p}{(}\PY{n}{gamma\PYZus{}initializer}\PY{o}{=}\PY{n}{gamma\PYZus{}initializer}\PY{p}{)}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+    \PY{k}{if} \PY{n}{activation}\PY{p}{:}
+        \PY{n}{x} \PY{o}{=} \PY{n}{activation}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+    \PY{k}{return} \PY{n}{x}
+
+
+\PY{k}{def} \PY{n+nf}{upsample}\PY{p}{(}
+    \PY{n}{x}\PY{p}{,}
+    \PY{n}{filters}\PY{p}{,}
+    \PY{n}{activation}\PY{p}{,}
+    \PY{n}{kernel\PYZus{}size}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,}
+    \PY{n}{strides}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{,}
+    \PY{n}{padding}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{same}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{n}{kernel\PYZus{}initializer}\PY{o}{=}\PY{n}{kernel\PYZus{}init}\PY{p}{,}
+    \PY{n}{gamma\PYZus{}initializer}\PY{o}{=}\PY{n}{gamma\PYZus{}init}\PY{p}{,}
+    \PY{n}{use\PYZus{}bias}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,}
+\PY{p}{)}\PY{p}{:}
+    \PY{n}{x} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Conv2DTranspose}\PY{p}{(}
+        \PY{n}{filters}\PY{p}{,}
+        \PY{n}{kernel\PYZus{}size}\PY{p}{,}
+        \PY{n}{strides}\PY{o}{=}\PY{n}{strides}\PY{p}{,}
+        \PY{n}{padding}\PY{o}{=}\PY{n}{padding}\PY{p}{,}
+        \PY{n}{kernel\PYZus{}initializer}\PY{o}{=}\PY{n}{kernel\PYZus{}initializer}\PY{p}{,}
+        \PY{n}{use\PYZus{}bias}\PY{o}{=}\PY{n}{use\PYZus{}bias}\PY{p}{,}
+    \PY{p}{)}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+    \PY{n}{x} \PY{o}{=} \PY{n}{tfa}\PY{o}{.}\PY{n}{layers}\PY{o}{.}\PY{n}{InstanceNormalization}\PY{p}{(}\PY{n}{gamma\PYZus{}initializer}\PY{o}{=}\PY{n}{gamma\PYZus{}initializer}\PY{p}{)}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+    \PY{k}{if} \PY{n}{activation}\PY{p}{:}
+        \PY{n}{x} \PY{o}{=} \PY{n}{activation}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+    \PY{k}{return} \PY{n}{x}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \subsubsection{Combine Upsample \&
+DownSample}\label{combine-upsample-downsample}
+
+The generator first downsamples the input image and then upsample while
+establishing long skip connections to help bypass the vanishing gradient
+problem. It concatenates the output of the downsample layer to the
+upsample layer. I define the input image size 256x256x3 because its an
+RGB image.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{input\PYZus{}img\PYZus{}size} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{256}\PY{p}{,}\PY{l+m+mi}{256}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}
+\PY{k}{def} \PY{n+nf}{get\PYZus{}resnet\PYZus{}generator}\PY{p}{(}
+    \PY{n}{filters}\PY{o}{=}\PY{l+m+mi}{64}\PY{p}{,}
+    \PY{n}{num\PYZus{}downsampling\PYZus{}blocks}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,}
+    \PY{n}{num\PYZus{}residual\PYZus{}blocks}\PY{o}{=}\PY{l+m+mi}{9}\PY{p}{,}
+    \PY{n}{num\PYZus{}upsample\PYZus{}blocks}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,}
+    \PY{n}{gamma\PYZus{}initializer}\PY{o}{=}\PY{n}{gamma\PYZus{}init}\PY{p}{,}
+    \PY{n}{name}\PY{o}{=}\PY{k+kc}{None}\PY{p}{,}
+\PY{p}{)}\PY{p}{:}
+    \PY{n}{img\PYZus{}input} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Input}\PY{p}{(}\PY{n}{shape}\PY{o}{=}\PY{n}{input\PYZus{}img\PYZus{}size}\PY{p}{,} \PY{n}{name}\PY{o}{=}\PY{n}{name} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZus{}img\PYZus{}input}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{x} \PY{o}{=} \PY{n}{ReflectionPadding2D}\PY{p}{(}\PY{n}{padding}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}\PY{p}{(}\PY{n}{img\PYZus{}input}\PY{p}{)}
+    \PY{n}{x} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Conv2D}\PY{p}{(}\PY{n}{filters}\PY{p}{,} \PY{p}{(}\PY{l+m+mi}{7}\PY{p}{,} \PY{l+m+mi}{7}\PY{p}{)}\PY{p}{,} \PY{n}{kernel\PYZus{}initializer}\PY{o}{=}\PY{n}{kernel\PYZus{}init}\PY{p}{,} \PY{n}{use\PYZus{}bias}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{p}{(}
+        \PY{n}{x}
+    \PY{p}{)}
+    \PY{n}{x} \PY{o}{=} \PY{n}{tfa}\PY{o}{.}\PY{n}{layers}\PY{o}{.}\PY{n}{InstanceNormalization}\PY{p}{(}\PY{n}{gamma\PYZus{}initializer}\PY{o}{=}\PY{n}{gamma\PYZus{}initializer}\PY{p}{)}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+    \PY{n}{x} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Activation}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{relu}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Downsampling}
+    \PY{k}{for} \PY{n}{\PYZus{}} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{num\PYZus{}downsampling\PYZus{}blocks}\PY{p}{)}\PY{p}{:}
+        \PY{n}{filters} \PY{o}{*}\PY{o}{=} \PY{l+m+mi}{2}
+        \PY{n}{x} \PY{o}{=} \PY{n}{downsample}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{filters}\PY{o}{=}\PY{n}{filters}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{n}{layers}\PY{o}{.}\PY{n}{Activation}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{relu}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Residual blocks}
+    \PY{k}{for} \PY{n}{\PYZus{}} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{num\PYZus{}residual\PYZus{}blocks}\PY{p}{)}\PY{p}{:}
+        \PY{n}{x} \PY{o}{=} \PY{n}{residual\PYZus{}block}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{n}{layers}\PY{o}{.}\PY{n}{Activation}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{relu}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Upsampling}
+    \PY{k}{for} \PY{n}{\PYZus{}} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{num\PYZus{}upsample\PYZus{}blocks}\PY{p}{)}\PY{p}{:}
+        \PY{n}{filters} \PY{o}{/}\PY{o}{/}\PY{o}{=} \PY{l+m+mi}{2}
+        \PY{n}{x} \PY{o}{=} \PY{n}{upsample}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{filters}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{n}{layers}\PY{o}{.}\PY{n}{Activation}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{relu}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} Final block}
+    \PY{n}{x} \PY{o}{=} \PY{n}{ReflectionPadding2D}\PY{p}{(}\PY{n}{padding}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+    \PY{n}{x} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Conv2D}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,} \PY{p}{(}\PY{l+m+mi}{7}\PY{p}{,} \PY{l+m+mi}{7}\PY{p}{)}\PY{p}{,} \PY{n}{padding}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{valid}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+    \PY{n}{x} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Activation}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{tanh}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+
+    \PY{n}{model} \PY{o}{=} \PY{n}{keras}\PY{o}{.}\PY{n}{models}\PY{o}{.}\PY{n}{Model}\PY{p}{(}\PY{n}{img\PYZus{}input}\PY{p}{,} \PY{n}{x}\PY{p}{,} \PY{n}{name}\PY{o}{=}\PY{n}{name}\PY{p}{)}
+    \PY{k}{return} \PY{n}{model}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \section{Build the discriminator}\label{build-the-discriminator}
+
+The discriminator takes in the input image and classifies it as real or
+fake (generated). Instead of outputing a single node, the discriminator
+outputs a smaller 2D image with higher pixel values indicating a real
+classification and lower values indicating a fake classification.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{get\PYZus{}discriminator}\PY{p}{(}
+    \PY{n}{filters}\PY{o}{=}\PY{l+m+mi}{64}\PY{p}{,} \PY{n}{kernel\PYZus{}initializer}\PY{o}{=}\PY{n}{kernel\PYZus{}init}\PY{p}{,} \PY{n}{num\PYZus{}downsampling}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{,} \PY{n}{name}\PY{o}{=}\PY{k+kc}{None}
+\PY{p}{)}\PY{p}{:}
+    \PY{n}{img\PYZus{}input} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Input}\PY{p}{(}\PY{n}{shape}\PY{o}{=}\PY{n}{input\PYZus{}img\PYZus{}size}\PY{p}{,} \PY{n}{name}\PY{o}{=}\PY{n}{name} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZus{}img\PYZus{}input}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{x} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Conv2D}\PY{p}{(}
+        \PY{n}{filters}\PY{p}{,}
+        \PY{p}{(}\PY{l+m+mi}{4}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{)}\PY{p}{,}
+        \PY{n}{strides}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{,}
+        \PY{n}{padding}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{same}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+        \PY{n}{kernel\PYZus{}initializer}\PY{o}{=}\PY{n}{kernel\PYZus{}initializer}\PY{p}{,}
+    \PY{p}{)}\PY{p}{(}\PY{n}{img\PYZus{}input}\PY{p}{)}
+    \PY{n}{x} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{LeakyReLU}\PY{p}{(}\PY{l+m+mf}{0.2}\PY{p}{)}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+
+    \PY{n}{num\PYZus{}filters} \PY{o}{=} \PY{n}{filters}
+    \PY{k}{for} \PY{n}{num\PYZus{}downsample\PYZus{}block} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{:}
+        \PY{n}{num\PYZus{}filters} \PY{o}{*}\PY{o}{=} \PY{l+m+mi}{2}
+        \PY{k}{if} \PY{n}{num\PYZus{}downsample\PYZus{}block} \PY{o}{\PYZlt{}} \PY{l+m+mi}{2}\PY{p}{:}
+            \PY{n}{x} \PY{o}{=} \PY{n}{downsample}\PY{p}{(}
+                \PY{n}{x}\PY{p}{,}
+                \PY{n}{filters}\PY{o}{=}\PY{n}{num\PYZus{}filters}\PY{p}{,}
+                \PY{n}{activation}\PY{o}{=}\PY{n}{layers}\PY{o}{.}\PY{n}{LeakyReLU}\PY{p}{(}\PY{l+m+mf}{0.2}\PY{p}{)}\PY{p}{,}
+                \PY{n}{kernel\PYZus{}size}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{)}\PY{p}{,}
+                \PY{n}{strides}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}\PY{p}{,}
+            \PY{p}{)}
+        \PY{k}{else}\PY{p}{:}
+            \PY{n}{x} \PY{o}{=} \PY{n}{downsample}\PY{p}{(}
+                \PY{n}{x}\PY{p}{,}
+                \PY{n}{filters}\PY{o}{=}\PY{n}{num\PYZus{}filters}\PY{p}{,}
+                \PY{n}{activation}\PY{o}{=}\PY{n}{layers}\PY{o}{.}\PY{n}{LeakyReLU}\PY{p}{(}\PY{l+m+mf}{0.2}\PY{p}{)}\PY{p}{,}
+                \PY{n}{kernel\PYZus{}size}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{)}\PY{p}{,}
+                \PY{n}{strides}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,}
+            \PY{p}{)}
+
+    \PY{n}{x} \PY{o}{=} \PY{n}{layers}\PY{o}{.}\PY{n}{Conv2D}\PY{p}{(}
+        \PY{l+m+mi}{1}\PY{p}{,} \PY{p}{(}\PY{l+m+mi}{4}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{)}\PY{p}{,} \PY{n}{strides}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,} \PY{n}{padding}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{same}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{kernel\PYZus{}initializer}\PY{o}{=}\PY{n}{kernel\PYZus{}initializer}
+    \PY{p}{)}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+
+    \PY{n}{model} \PY{o}{=} \PY{n}{keras}\PY{o}{.}\PY{n}{models}\PY{o}{.}\PY{n}{Model}\PY{p}{(}\PY{n}{inputs}\PY{o}{=}\PY{n}{img\PYZus{}input}\PY{p}{,} \PY{n}{outputs}\PY{o}{=}\PY{n}{x}\PY{p}{,} \PY{n}{name}\PY{o}{=}\PY{n}{name}\PY{p}{)}
+    \PY{k}{return} \PY{n}{model}
+
+
+\PY{c+c1}{\PYZsh{} Get the generators}
+\PY{n}{gen\PYZus{}G} \PY{o}{=} \PY{n}{get\PYZus{}resnet\PYZus{}generator}\PY{p}{(}\PY{n}{name}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{generator\PYZus{}G}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{gen\PYZus{}F} \PY{o}{=} \PY{n}{get\PYZus{}resnet\PYZus{}generator}\PY{p}{(}\PY{n}{name}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{generator\PYZus{}F}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Get the discriminators}
+\PY{n}{disc\PYZus{}X} \PY{o}{=} \PY{n}{get\PYZus{}discriminator}\PY{p}{(}\PY{n}{name}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{discriminator\PYZus{}X}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{disc\PYZus{}Y} \PY{o}{=} \PY{n}{get\PYZus{}discriminator}\PY{p}{(}\PY{n}{name}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{discriminator\PYZus{}Y}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/opt/anaconda3/envs/py39/lib/python3.9/site-
+packages/keras/src/initializers/initializers.py:120: UserWarning: The
+initializer RandomNormal is unseeded and being called multiple times, which will
+return identical values each time (even if the initializer is unseeded). Please
+update your code to provide a seed to the initializer, or avoid using the same
+initializer instance more than once.
+  warnings.warn(
+    \end{Verbatim}
+
+    \subsection{Build the CycleGAN model}\label{build-the-cyclegan-model}
+
+The CycleGAN class is a sublass of keras.Model so that fit() can be ran
+on it later to train the model. During the training step, the model
+transforms a photo to a Monet painting and then back to a photo. The
+difference between the original photo and the twice-transformed photo is
+the cycle-consistency loss. The goal is for the original photo and the
+twice-transformed photo to be similar to one another. The mean absolute
+error identity loss and cycle loss are used.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{class} \PY{n+nc}{CycleGan}\PY{p}{(}\PY{n}{keras}\PY{o}{.}\PY{n}{Model}\PY{p}{)}\PY{p}{:}
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}
+        \PY{n+nb+bp}{self}\PY{p}{,}
+        \PY{n}{generator\PYZus{}G}\PY{p}{,}
+        \PY{n}{generator\PYZus{}F}\PY{p}{,}
+        \PY{n}{discriminator\PYZus{}X}\PY{p}{,}
+        \PY{n}{discriminator\PYZus{}Y}\PY{p}{,}
+        \PY{n}{lambda\PYZus{}cycle}\PY{o}{=}\PY{l+m+mf}{10.0}\PY{p}{,}
+        \PY{n}{lambda\PYZus{}identity}\PY{o}{=}\PY{l+m+mf}{0.5}\PY{p}{,}
+    \PY{p}{)}\PY{p}{:}
+        \PY{n+nb}{super}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{p}{)}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{gen\PYZus{}G} \PY{o}{=} \PY{n}{generator\PYZus{}G}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{gen\PYZus{}F} \PY{o}{=} \PY{n}{generator\PYZus{}F}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{disc\PYZus{}X} \PY{o}{=} \PY{n}{discriminator\PYZus{}X}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{disc\PYZus{}Y} \PY{o}{=} \PY{n}{discriminator\PYZus{}Y}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{lambda\PYZus{}cycle} \PY{o}{=} \PY{n}{lambda\PYZus{}cycle}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{lambda\PYZus{}identity} \PY{o}{=} \PY{n}{lambda\PYZus{}identity}
+
+    \PY{k}{def} \PY{n+nf}{call}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{inputs}\PY{p}{)}\PY{p}{:}
+        \PY{k}{return} \PY{p}{(}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{disc\PYZus{}X}\PY{p}{(}\PY{n}{inputs}\PY{p}{)}\PY{p}{,}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{disc\PYZus{}Y}\PY{p}{(}\PY{n}{inputs}\PY{p}{)}\PY{p}{,}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{gen\PYZus{}G}\PY{p}{(}\PY{n}{inputs}\PY{p}{)}\PY{p}{,}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{gen\PYZus{}F}\PY{p}{(}\PY{n}{inputs}\PY{p}{)}\PY{p}{,}
+        \PY{p}{)}
+
+    \PY{k}{def} \PY{n+nf}{compile}\PY{p}{(}
+        \PY{n+nb+bp}{self}\PY{p}{,}
+        \PY{n}{gen\PYZus{}G\PYZus{}optimizer}\PY{p}{,}
+        \PY{n}{gen\PYZus{}F\PYZus{}optimizer}\PY{p}{,}
+        \PY{n}{disc\PYZus{}X\PYZus{}optimizer}\PY{p}{,}
+        \PY{n}{disc\PYZus{}Y\PYZus{}optimizer}\PY{p}{,}
+        \PY{n}{gen\PYZus{}loss\PYZus{}fn}\PY{p}{,}
+        \PY{n}{disc\PYZus{}loss\PYZus{}fn}\PY{p}{,}
+    \PY{p}{)}\PY{p}{:}
+        \PY{n+nb}{super}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{compile}\PY{p}{(}\PY{p}{)}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{gen\PYZus{}G\PYZus{}optimizer} \PY{o}{=} \PY{n}{gen\PYZus{}G\PYZus{}optimizer}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{gen\PYZus{}F\PYZus{}optimizer} \PY{o}{=} \PY{n}{gen\PYZus{}F\PYZus{}optimizer}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{disc\PYZus{}X\PYZus{}optimizer} \PY{o}{=} \PY{n}{disc\PYZus{}X\PYZus{}optimizer}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{disc\PYZus{}Y\PYZus{}optimizer} \PY{o}{=} \PY{n}{disc\PYZus{}Y\PYZus{}optimizer}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{generator\PYZus{}loss\PYZus{}fn} \PY{o}{=} \PY{n}{gen\PYZus{}loss\PYZus{}fn}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{discriminator\PYZus{}loss\PYZus{}fn} \PY{o}{=} \PY{n}{disc\PYZus{}loss\PYZus{}fn}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{cycle\PYZus{}loss\PYZus{}fn} \PY{o}{=} \PY{n}{keras}\PY{o}{.}\PY{n}{losses}\PY{o}{.}\PY{n}{MeanAbsoluteError}\PY{p}{(}\PY{p}{)}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{identity\PYZus{}loss\PYZus{}fn} \PY{o}{=} \PY{n}{keras}\PY{o}{.}\PY{n}{losses}\PY{o}{.}\PY{n}{MeanAbsoluteError}\PY{p}{(}\PY{p}{)}
+
+    \PY{k}{def} \PY{n+nf}{train\PYZus{}step}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{batch\PYZus{}data}\PY{p}{)}\PY{p}{:}
+        \PY{c+c1}{\PYZsh{}Horse2Zebra}
+        \PY{c+c1}{\PYZsh{}Photo2Monet}
+        \PY{c+c1}{\PYZsh{} x is Photo and y is Monet}
+        \PY{n}{real\PYZus{}x}\PY{p}{,} \PY{n}{real\PYZus{}y} \PY{o}{=} \PY{n}{batch\PYZus{}data}
+
+        \PY{c+c1}{\PYZsh{} For CycleGAN, we need to calculate different}
+        \PY{c+c1}{\PYZsh{} kinds of losses for the generators and discriminators.}
+        \PY{c+c1}{\PYZsh{} We will perform the following steps here:}
+        \PY{c+c1}{\PYZsh{}}
+        \PY{c+c1}{\PYZsh{} 1. Pass real images through the generators and get the generated images}
+        \PY{c+c1}{\PYZsh{} 2. Pass the generated images back to the generators to check if we}
+        \PY{c+c1}{\PYZsh{}    can predict the original image from the generated image.}
+        \PY{c+c1}{\PYZsh{} 3. Do an identity mapping of the real images using the generators.}
+        \PY{c+c1}{\PYZsh{} 4. Pass the generated images in 1) to the corresponding discriminators.}
+        \PY{c+c1}{\PYZsh{} 5. Calculate the generators total loss (adversarial + cycle + identity)}
+        \PY{c+c1}{\PYZsh{} 6. Calculate the discriminators loss}
+        \PY{c+c1}{\PYZsh{} 7. Update the weights of the generators}
+        \PY{c+c1}{\PYZsh{} 8. Update the weights of the discriminators}
+        \PY{c+c1}{\PYZsh{} 9. Return the losses in a dictionary}
+
+        \PY{k}{with} \PY{n}{tf}\PY{o}{.}\PY{n}{GradientTape}\PY{p}{(}\PY{n}{persistent}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)} \PY{k}{as} \PY{n}{tape}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{} Photo to fake Monet}
+            \PY{n}{fake\PYZus{}y} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{gen\PYZus{}G}\PY{p}{(}\PY{n}{real\PYZus{}x}\PY{p}{,} \PY{n}{training}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+            \PY{c+c1}{\PYZsh{} Monet to fake Photo \PYZhy{}\PYZgt{} y2x}
+            \PY{n}{fake\PYZus{}x} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{gen\PYZus{}F}\PY{p}{(}\PY{n}{real\PYZus{}y}\PY{p}{,} \PY{n}{training}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+
+            \PY{c+c1}{\PYZsh{} Cycle (Photo to fake Monet to fake Photo): x \PYZhy{}\PYZgt{} y \PYZhy{}\PYZgt{} x}
+            \PY{n}{cycled\PYZus{}x} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{gen\PYZus{}F}\PY{p}{(}\PY{n}{fake\PYZus{}y}\PY{p}{,} \PY{n}{training}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+            \PY{c+c1}{\PYZsh{} Cycle (Monet to fake Photo to fake Monet) y \PYZhy{}\PYZgt{} x \PYZhy{}\PYZgt{} y}
+            \PY{n}{cycled\PYZus{}y} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{gen\PYZus{}G}\PY{p}{(}\PY{n}{fake\PYZus{}x}\PY{p}{,} \PY{n}{training}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+
+            \PY{c+c1}{\PYZsh{} Identity mapping}
+            \PY{n}{same\PYZus{}x} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{gen\PYZus{}F}\PY{p}{(}\PY{n}{real\PYZus{}x}\PY{p}{,} \PY{n}{training}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+            \PY{n}{same\PYZus{}y} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{gen\PYZus{}G}\PY{p}{(}\PY{n}{real\PYZus{}y}\PY{p}{,} \PY{n}{training}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+
+            \PY{c+c1}{\PYZsh{} Discriminator output}
+            \PY{n}{disc\PYZus{}real\PYZus{}x} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{disc\PYZus{}X}\PY{p}{(}\PY{n}{real\PYZus{}x}\PY{p}{,} \PY{n}{training}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+            \PY{n}{disc\PYZus{}fake\PYZus{}x} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{disc\PYZus{}X}\PY{p}{(}\PY{n}{fake\PYZus{}x}\PY{p}{,} \PY{n}{training}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+
+            \PY{n}{disc\PYZus{}real\PYZus{}y} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{disc\PYZus{}Y}\PY{p}{(}\PY{n}{real\PYZus{}y}\PY{p}{,} \PY{n}{training}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+            \PY{n}{disc\PYZus{}fake\PYZus{}y} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{disc\PYZus{}Y}\PY{p}{(}\PY{n}{fake\PYZus{}y}\PY{p}{,} \PY{n}{training}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+
+            \PY{c+c1}{\PYZsh{} Generator adversarial loss}
+            \PY{n}{gen\PYZus{}G\PYZus{}loss} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{generator\PYZus{}loss\PYZus{}fn}\PY{p}{(}\PY{n}{disc\PYZus{}fake\PYZus{}y}\PY{p}{)}
+            \PY{n}{gen\PYZus{}F\PYZus{}loss} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{generator\PYZus{}loss\PYZus{}fn}\PY{p}{(}\PY{n}{disc\PYZus{}fake\PYZus{}x}\PY{p}{)}
+
+            \PY{c+c1}{\PYZsh{} Generator cycle loss}
+            \PY{n}{cycle\PYZus{}loss\PYZus{}G} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{cycle\PYZus{}loss\PYZus{}fn}\PY{p}{(}\PY{n}{real\PYZus{}y}\PY{p}{,} \PY{n}{cycled\PYZus{}y}\PY{p}{)} \PY{o}{*} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{lambda\PYZus{}cycle}
+            \PY{n}{cycle\PYZus{}loss\PYZus{}F} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{cycle\PYZus{}loss\PYZus{}fn}\PY{p}{(}\PY{n}{real\PYZus{}x}\PY{p}{,} \PY{n}{cycled\PYZus{}x}\PY{p}{)} \PY{o}{*} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{lambda\PYZus{}cycle}
+
+            \PY{c+c1}{\PYZsh{} Generator identity loss}
+            \PY{n}{id\PYZus{}loss\PYZus{}G} \PY{o}{=} \PY{p}{(}
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{identity\PYZus{}loss\PYZus{}fn}\PY{p}{(}\PY{n}{real\PYZus{}y}\PY{p}{,} \PY{n}{same\PYZus{}y}\PY{p}{)}
+                \PY{o}{*} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{lambda\PYZus{}cycle}
+                \PY{o}{*} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{lambda\PYZus{}identity}
+            \PY{p}{)}
+            \PY{n}{id\PYZus{}loss\PYZus{}F} \PY{o}{=} \PY{p}{(}
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{identity\PYZus{}loss\PYZus{}fn}\PY{p}{(}\PY{n}{real\PYZus{}x}\PY{p}{,} \PY{n}{same\PYZus{}x}\PY{p}{)}
+                \PY{o}{*} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{lambda\PYZus{}cycle}
+                \PY{o}{*} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{lambda\PYZus{}identity}
+            \PY{p}{)}
+
+            \PY{c+c1}{\PYZsh{} Total generator loss}
+            \PY{n}{total\PYZus{}loss\PYZus{}G} \PY{o}{=} \PY{n}{gen\PYZus{}G\PYZus{}loss} \PY{o}{+} \PY{n}{cycle\PYZus{}loss\PYZus{}G} \PY{o}{+} \PY{n}{id\PYZus{}loss\PYZus{}G}
+            \PY{n}{total\PYZus{}loss\PYZus{}F} \PY{o}{=} \PY{n}{gen\PYZus{}F\PYZus{}loss} \PY{o}{+} \PY{n}{cycle\PYZus{}loss\PYZus{}F} \PY{o}{+} \PY{n}{id\PYZus{}loss\PYZus{}F}
+
+            \PY{c+c1}{\PYZsh{} Discriminator loss}
+            \PY{n}{disc\PYZus{}X\PYZus{}loss} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{discriminator\PYZus{}loss\PYZus{}fn}\PY{p}{(}\PY{n}{disc\PYZus{}real\PYZus{}x}\PY{p}{,} \PY{n}{disc\PYZus{}fake\PYZus{}x}\PY{p}{)}
+            \PY{n}{disc\PYZus{}Y\PYZus{}loss} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{discriminator\PYZus{}loss\PYZus{}fn}\PY{p}{(}\PY{n}{disc\PYZus{}real\PYZus{}y}\PY{p}{,} \PY{n}{disc\PYZus{}fake\PYZus{}y}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Get the gradients for the generators}
+        \PY{n}{grads\PYZus{}G} \PY{o}{=} \PY{n}{tape}\PY{o}{.}\PY{n}{gradient}\PY{p}{(}\PY{n}{total\PYZus{}loss\PYZus{}G}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{gen\PYZus{}G}\PY{o}{.}\PY{n}{trainable\PYZus{}variables}\PY{p}{)}
+        \PY{n}{grads\PYZus{}F} \PY{o}{=} \PY{n}{tape}\PY{o}{.}\PY{n}{gradient}\PY{p}{(}\PY{n}{total\PYZus{}loss\PYZus{}F}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{gen\PYZus{}F}\PY{o}{.}\PY{n}{trainable\PYZus{}variables}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Get the gradients for the discriminators}
+        \PY{n}{disc\PYZus{}X\PYZus{}grads} \PY{o}{=} \PY{n}{tape}\PY{o}{.}\PY{n}{gradient}\PY{p}{(}\PY{n}{disc\PYZus{}X\PYZus{}loss}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{disc\PYZus{}X}\PY{o}{.}\PY{n}{trainable\PYZus{}variables}\PY{p}{)}
+        \PY{n}{disc\PYZus{}Y\PYZus{}grads} \PY{o}{=} \PY{n}{tape}\PY{o}{.}\PY{n}{gradient}\PY{p}{(}\PY{n}{disc\PYZus{}Y\PYZus{}loss}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{disc\PYZus{}Y}\PY{o}{.}\PY{n}{trainable\PYZus{}variables}\PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Update the weights of the generators}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{gen\PYZus{}G\PYZus{}optimizer}\PY{o}{.}\PY{n}{apply\PYZus{}gradients}\PY{p}{(}
+            \PY{n+nb}{zip}\PY{p}{(}\PY{n}{grads\PYZus{}G}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{gen\PYZus{}G}\PY{o}{.}\PY{n}{trainable\PYZus{}variables}\PY{p}{)}
+        \PY{p}{)}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{gen\PYZus{}F\PYZus{}optimizer}\PY{o}{.}\PY{n}{apply\PYZus{}gradients}\PY{p}{(}
+            \PY{n+nb}{zip}\PY{p}{(}\PY{n}{grads\PYZus{}F}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{gen\PYZus{}F}\PY{o}{.}\PY{n}{trainable\PYZus{}variables}\PY{p}{)}
+        \PY{p}{)}
+
+        \PY{c+c1}{\PYZsh{} Update the weights of the discriminators}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{disc\PYZus{}X\PYZus{}optimizer}\PY{o}{.}\PY{n}{apply\PYZus{}gradients}\PY{p}{(}
+            \PY{n+nb}{zip}\PY{p}{(}\PY{n}{disc\PYZus{}X\PYZus{}grads}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{disc\PYZus{}X}\PY{o}{.}\PY{n}{trainable\PYZus{}variables}\PY{p}{)}
+        \PY{p}{)}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{disc\PYZus{}Y\PYZus{}optimizer}\PY{o}{.}\PY{n}{apply\PYZus{}gradients}\PY{p}{(}
+            \PY{n+nb}{zip}\PY{p}{(}\PY{n}{disc\PYZus{}Y\PYZus{}grads}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{disc\PYZus{}Y}\PY{o}{.}\PY{n}{trainable\PYZus{}variables}\PY{p}{)}
+        \PY{p}{)}
+
+        \PY{k}{return} \PY{p}{\PYZob{}}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{G\PYZus{}loss}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{total\PYZus{}loss\PYZus{}G}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{F\PYZus{}loss}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{total\PYZus{}loss\PYZus{}F}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{D\PYZus{}X\PYZus{}loss}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{disc\PYZus{}X\PYZus{}loss}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{D\PYZus{}Y\PYZus{}loss}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{disc\PYZus{}Y\PYZus{}loss}\PY{p}{,}
+        \PY{p}{\PYZcb{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \subsection{Define loss functions}\label{define-loss-functions}
+
+The generator wants to fool the discriminator into thinking the
+generated image is real. The discriminator loss function below compares
+real images to a matrix of 1s and fake images to a matrix of 0s. The
+perfect generator will have the discriminator output only 1s. The
+perfect discriminator will output all 1s for real images and all 0s for
+fake images. The discriminator loss outputs the average of the real and
+generated loss.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Loss function for evaluating adversarial loss}
+\PY{n}{adv\PYZus{}loss\PYZus{}fn} \PY{o}{=} \PY{n}{keras}\PY{o}{.}\PY{n}{losses}\PY{o}{.}\PY{n}{MeanSquaredError}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} loss function for the generators}
+\PY{k}{def} \PY{n+nf}{generator\PYZus{}loss\PYZus{}fn}\PY{p}{(}\PY{n}{fake}\PY{p}{)}\PY{p}{:}
+    \PY{n}{fake\PYZus{}loss} \PY{o}{=} \PY{n}{adv\PYZus{}loss\PYZus{}fn}\PY{p}{(}\PY{n}{tf}\PY{o}{.}\PY{n}{ones\PYZus{}like}\PY{p}{(}\PY{n}{fake}\PY{p}{)}\PY{p}{,} \PY{n}{fake}\PY{p}{)}
+    \PY{k}{return} \PY{n}{fake\PYZus{}loss}
+
+
+\PY{c+c1}{\PYZsh{} loss function for the discriminators}
+\PY{k}{def} \PY{n+nf}{discriminator\PYZus{}loss\PYZus{}fn}\PY{p}{(}\PY{n}{real}\PY{p}{,} \PY{n}{fake}\PY{p}{)}\PY{p}{:}
+    \PY{n}{real\PYZus{}loss} \PY{o}{=} \PY{n}{adv\PYZus{}loss\PYZus{}fn}\PY{p}{(}\PY{n}{tf}\PY{o}{.}\PY{n}{ones\PYZus{}like}\PY{p}{(}\PY{n}{real}\PY{p}{)}\PY{p}{,} \PY{n}{real}\PY{p}{)}
+    \PY{n}{fake\PYZus{}loss} \PY{o}{=} \PY{n}{adv\PYZus{}loss\PYZus{}fn}\PY{p}{(}\PY{n}{tf}\PY{o}{.}\PY{n}{zeros\PYZus{}like}\PY{p}{(}\PY{n}{fake}\PY{p}{)}\PY{p}{,} \PY{n}{fake}\PY{p}{)}
+    \PY{k}{return} \PY{p}{(}\PY{n}{real\PYZus{}loss} \PY{o}{+} \PY{n}{fake\PYZus{}loss}\PY{p}{)} \PY{o}{*} \PY{l+m+mf}{0.5}
+\end{Verbatim}
+\end{tcolorbox}
+
+    This GANMonitor() function will be used later during training to
+visualize generated images after each epoch.
+
+    The identity loss compares the image with its generator (i.e.~photo with
+photo generator). If given a photo as input, we want it to generate the
+same image as the image was originally a photo. The identity loss
+compares the input with the output of the generator.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{class} \PY{n+nc}{GANMonitor}\PY{p}{(}\PY{n}{keras}\PY{o}{.}\PY{n}{callbacks}\PY{o}{.}\PY{n}{Callback}\PY{p}{)}\PY{p}{:}
+\PY{+w}{    }\PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}A callback to generate and save images after each epoch\PYZdq{}\PYZdq{}\PYZdq{}}
+
+    \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{num\PYZus{}img}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{:}
+        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{num\PYZus{}img} \PY{o}{=} \PY{n}{num\PYZus{}img}
+
+    \PY{k}{def} \PY{n+nf}{on\PYZus{}epoch\PYZus{}end}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{epoch}\PY{p}{,} \PY{n}{logs}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
+        \PY{n}{\PYZus{}}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,} \PY{l+m+mi}{12}\PY{p}{)}\PY{p}{)}
+        \PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{img} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{photo\PYZus{}ds}\PY{o}{.}\PY{n}{take}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{num\PYZus{}img}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+            \PY{n}{prediction} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{model}\PY{o}{.}\PY{n}{gen\PYZus{}G}\PY{p}{(}\PY{n}{img}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{numpy}\PY{p}{(}\PY{p}{)}
+            \PY{n}{prediction} \PY{o}{=} \PY{p}{(}\PY{n}{prediction} \PY{o}{*} \PY{l+m+mf}{127.5} \PY{o}{+} \PY{l+m+mf}{127.5}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}
+            \PY{n}{img} \PY{o}{=} \PY{p}{(}\PY{n}{img}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{*} \PY{l+m+mf}{127.5} \PY{o}{+} \PY{l+m+mf}{127.5}\PY{p}{)}\PY{o}{.}\PY{n}{numpy}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}
+
+            \PY{n}{ax}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img}\PY{p}{)}
+            \PY{n}{ax}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{prediction}\PY{p}{)}
+            \PY{n}{ax}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Input image}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+            \PY{n}{ax}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Translated image}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+            \PY{n}{ax}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{off}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+            \PY{n}{ax}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{off}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+            \PY{n}{prediction} \PY{o}{=} \PY{n}{keras}\PY{o}{.}\PY{n}{utils}\PY{o}{.}\PY{n}{array\PYZus{}to\PYZus{}img}\PY{p}{(}\PY{n}{prediction}\PY{p}{)}
+            \PY{n}{prediction}\PY{o}{.}\PY{n}{save}\PY{p}{(}
+                \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{generated\PYZus{}img\PYZus{}}\PY{l+s+si}{\PYZob{}i\PYZcb{}}\PY{l+s+s2}{\PYZus{}}\PY{l+s+si}{\PYZob{}epoch\PYZcb{}}\PY{l+s+s2}{.png}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{i}\PY{o}{=}\PY{n}{i}\PY{p}{,} \PY{n}{epoch}\PY{o}{=}\PY{n}{epoch} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)}
+            \PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{close}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Below I compute the model adam optimizers and the two loss functions we
+defined for the discriminator and generator.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Create cycle gan model}
+\PY{n}{cycle\PYZus{}gan\PYZus{}model} \PY{o}{=} \PY{n}{CycleGan}\PY{p}{(}
+    \PY{n}{generator\PYZus{}G}\PY{o}{=}\PY{n}{gen\PYZus{}G}\PY{p}{,} \PY{n}{generator\PYZus{}F}\PY{o}{=}\PY{n}{gen\PYZus{}F}\PY{p}{,} \PY{n}{discriminator\PYZus{}X}\PY{o}{=}\PY{n}{disc\PYZus{}X}\PY{p}{,} \PY{n}{discriminator\PYZus{}Y}\PY{o}{=}\PY{n}{disc\PYZus{}Y}
+\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Compile the model}
+\PY{n}{cycle\PYZus{}gan\PYZus{}model}\PY{o}{.}\PY{n}{compile}\PY{p}{(}
+    \PY{n}{gen\PYZus{}G\PYZus{}optimizer}\PY{o}{=}\PY{n}{keras}\PY{o}{.}\PY{n}{optimizers}\PY{o}{.}\PY{n}{legacy}\PY{o}{.}\PY{n}{Adam}\PY{p}{(}\PY{n}{learning\PYZus{}rate}\PY{o}{=}\PY{l+m+mf}{2e\PYZhy{}4}\PY{p}{,} \PY{n}{beta\PYZus{}1}\PY{o}{=}\PY{l+m+mf}{0.5}\PY{p}{)}\PY{p}{,}
+    \PY{n}{gen\PYZus{}F\PYZus{}optimizer}\PY{o}{=}\PY{n}{keras}\PY{o}{.}\PY{n}{optimizers}\PY{o}{.}\PY{n}{legacy}\PY{o}{.}\PY{n}{Adam}\PY{p}{(}\PY{n}{learning\PYZus{}rate}\PY{o}{=}\PY{l+m+mf}{2e\PYZhy{}4}\PY{p}{,} \PY{n}{beta\PYZus{}1}\PY{o}{=}\PY{l+m+mf}{0.5}\PY{p}{)}\PY{p}{,}
+    \PY{n}{disc\PYZus{}X\PYZus{}optimizer}\PY{o}{=}\PY{n}{keras}\PY{o}{.}\PY{n}{optimizers}\PY{o}{.}\PY{n}{legacy}\PY{o}{.}\PY{n}{Adam}\PY{p}{(}\PY{n}{learning\PYZus{}rate}\PY{o}{=}\PY{l+m+mf}{2e\PYZhy{}4}\PY{p}{,} \PY{n}{beta\PYZus{}1}\PY{o}{=}\PY{l+m+mf}{0.5}\PY{p}{)}\PY{p}{,}
+    \PY{n}{disc\PYZus{}Y\PYZus{}optimizer}\PY{o}{=}\PY{n}{keras}\PY{o}{.}\PY{n}{optimizers}\PY{o}{.}\PY{n}{legacy}\PY{o}{.}\PY{n}{Adam}\PY{p}{(}\PY{n}{learning\PYZus{}rate}\PY{o}{=}\PY{l+m+mf}{2e\PYZhy{}4}\PY{p}{,} \PY{n}{beta\PYZus{}1}\PY{o}{=}\PY{l+m+mf}{0.5}\PY{p}{)}\PY{p}{,}
+    \PY{n}{gen\PYZus{}loss\PYZus{}fn}\PY{o}{=}\PY{n}{generator\PYZus{}loss\PYZus{}fn}\PY{p}{,}
+    \PY{n}{disc\PYZus{}loss\PYZus{}fn}\PY{o}{=}\PY{n}{discriminator\PYZus{}loss\PYZus{}fn}\PY{p}{,}
+\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Below I define the callbacks and fit the model. I am using the
+GANMonitor callback which is a function created above to generate images
+after epoch to visualize results, a checkpoint callback to save a model
+at each epoch and a logger for the training history. Then I being
+training for 50 epochs.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{callbacks} \PY{o}{=} \PY{p}{[}\PY{n}{GANMonitor}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{keras}\PY{o}{.}\PY{n}{callbacks}\PY{o}{.}\PY{n}{ModelCheckpoint}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{save\PYZus{}at\PYZus{}}\PY{l+s+si}{\PYZob{}epoch\PYZcb{}}\PY{l+s+s2}{.keras}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{n}{CSVLogger}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CycleGAN\PYZus{}training.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{,}
+             \PY{n}{keras}\PY{o}{.}\PY{n}{callbacks}\PY{o}{.}\PY{n}{ModelCheckpoint}\PY{p}{(}\PY{n}{filepath}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{./training\PYZus{}checkpoints/checkpoint\PYZus{}}\PY{l+s+si}{\PYZob{}epoch\PYZcb{}}\PY{l+s+s2}{.keras}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{save\PYZus{}weights\PYZus{}only}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{]}
+
+\PY{n}{cycle\PYZus{}gan\PYZus{}model}\PY{o}{.}\PY{n}{fit}\PY{p}{(}
+    \PY{n}{tf}\PY{o}{.}\PY{n}{data}\PY{o}{.}\PY{n}{Dataset}\PY{o}{.}\PY{n}{zip}\PY{p}{(}\PY{p}{(}\PY{n}{photo\PYZus{}ds}\PY{p}{,} \PY{n}{monet\PYZus{}ds}\PY{p}{)}\PY{p}{)}\PY{p}{,}
+    \PY{n}{epochs}\PY{o}{=}\PY{l+m+mi}{50}\PY{p}{,}
+    \PY{n}{callbacks}\PY{o}{=}\PY{n}{callbacks}\PY{p}{,}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Epoch 1/50
+    300/Unknown - 3263s 11s/step - G\_loss: 5.0576 - F\_loss: 5.6748 - D\_X\_loss:
+0.0986 - D\_Y\_loss: 0.1212
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_27_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/opt/anaconda3/envs/py39/lib/python3.9/site-
+packages/keras/src/saving/saving\_api.py:164: UserWarning: You are saving a model
+that has not yet been built. It might not contain any weights yet. Consider
+building the model first by calling it on some data.
+  saving\_lib.save\_model(model, filepath)
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+300/300 [==============================] - 3271s 11s/step - G\_loss: 5.0512 -
+F\_loss: 5.6777 - D\_X\_loss: 0.0983 - D\_Y\_loss: 0.1209
+Epoch 2/50
+300/300 [==============================] - ETA: 0s - G\_loss: 4.6119 - F\_loss:
+5.2049 - D\_X\_loss: 0.1346 - D\_Y\_loss: 0.1828
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_27_5.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+300/300 [==============================] - 3199s 11s/step - G\_loss: 4.6048 -
+F\_loss: 5.2048 - D\_X\_loss: 0.1344 - D\_Y\_loss: 0.1830
+Epoch 3/50
+300/300 [==============================] - ETA: 0s - G\_loss: 4.3367 - F\_loss:
+4.7622 - D\_X\_loss: 0.1623 - D\_Y\_loss: 0.1826
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_27_7.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+300/300 [==============================] - 2930s 10s/step - G\_loss: 4.3297 -
+F\_loss: 4.7598 - D\_X\_loss: 0.1619 - D\_Y\_loss: 0.1828
+Epoch 4/50
+300/300 [==============================] - ETA: 0s - G\_loss: 4.1971 - F\_loss:
+4.4956 - D\_X\_loss: 0.1808 - D\_Y\_loss: 0.1591
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_27_9.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+300/300 [==============================] - 2938s 10s/step - G\_loss: 4.1931 -
+F\_loss: 4.4907 - D\_X\_loss: 0.1813 - D\_Y\_loss: 0.1593
+Epoch 5/50
+300/300 [==============================] - ETA: 0s - G\_loss: 4.0898 - F\_loss:
+4.3408 - D\_X\_loss: 0.1675 - D\_Y\_loss: 0.1449
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_27_11.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+300/300 [==============================] - 2924s 10s/step - G\_loss: 4.0850 -
+F\_loss: 4.3379 - D\_X\_loss: 0.1673 - D\_Y\_loss: 0.1458
+Epoch 6/50
+300/300 [==============================] - ETA: 0s - G\_loss: 4.0719 - F\_loss:
+4.2226 - D\_X\_loss: 0.1594 - D\_Y\_loss: 0.1415
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_27_13.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+300/300 [==============================] - 2912s 10s/step - G\_loss: 4.0679 -
+F\_loss: 4.2174 - D\_X\_loss: 0.1598 - D\_Y\_loss: 0.1420
+Epoch 7/50
+300/300 [==============================] - ETA: 0s - G\_loss: 3.8708 - F\_loss:
+4.1403 - D\_X\_loss: 0.1494 - D\_Y\_loss: 0.1795
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_27_15.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+300/300 [==============================] - 2902s 10s/step - G\_loss: 3.8670 -
+F\_loss: 4.1378 - D\_X\_loss: 0.1495 - D\_Y\_loss: 0.1798
+Epoch 8/50
+300/300 [==============================] - ETA: 0s - G\_loss: 3.7599 - F\_loss:
+4.0673 - D\_X\_loss: 0.1496 - D\_Y\_loss: 0.1797
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_27_17.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+300/300 [==============================] - 2905s 10s/step - G\_loss: 3.7573 -
+F\_loss: 4.0649 - D\_X\_loss: 0.1500 - D\_Y\_loss: 0.1798
+Epoch 9/50
+300/300 [==============================] - ETA: 0s - G\_loss: 3.6746 - F\_loss:
+4.0140 - D\_X\_loss: 0.1510 - D\_Y\_loss: 0.1873
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_27_19.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+300/300 [==============================] - 2900s 10s/step - G\_loss: 3.6714 -
+F\_loss: 4.0128 - D\_X\_loss: 0.1510 - D\_Y\_loss: 0.1875
+Epoch 10/50
+300/300 [==============================] - ETA: 0s - G\_loss: 3.5989 - F\_loss:
+3.8836 - D\_X\_loss: 0.1803 - D\_Y\_loss: 0.1927
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_27_21.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+300/300 [==============================] - 2892s 10s/step - G\_loss: 3.5961 -
+F\_loss: 3.8811 - D\_X\_loss: 0.1803 - D\_Y\_loss: 0.1932
+Epoch 11/50
+300/300 [==============================] - ETA: 0s - G\_loss: 3.5442 - F\_loss:
+3.8442 - D\_X\_loss: 0.1837 - D\_Y\_loss: 0.1908
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_27_23.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+300/300 [==============================] - 2900s 10s/step - G\_loss: 3.5411 -
+F\_loss: 3.8443 - D\_X\_loss: 0.1841 - D\_Y\_loss: 0.1913
+Epoch 12/50
+300/300 [==============================] - ETA: 0s - G\_loss: 3.5354 - F\_loss:
+3.7594 - D\_X\_loss: 0.1827 - D\_Y\_loss: 0.1869
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_27_25.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+300/300 [==============================] - 2900s 10s/step - G\_loss: 3.5327 -
+F\_loss: 3.7561 - D\_X\_loss: 0.1826 - D\_Y\_loss: 0.1873
+Epoch 13/50
+300/300 [==============================] - ETA: 0s - G\_loss: 3.4824 - F\_loss:
+3.6683 - D\_X\_loss: 0.1873 - D\_Y\_loss: 0.1879
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_27_27.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+300/300 [==============================] - 2913s 10s/step - G\_loss: 3.4805 -
+F\_loss: 3.6662 - D\_X\_loss: 0.1873 - D\_Y\_loss: 0.1884
+Epoch 14/50
+300/300 [==============================] - ETA: 0s - G\_loss: 3.4013 - F\_loss:
+3.6734 - D\_X\_loss: 0.1825 - D\_Y\_loss: 0.1901
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_27_29.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+300/300 [==============================] - 2883s 10s/step - G\_loss: 3.3985 -
+F\_loss: 3.6731 - D\_X\_loss: 0.1823 - D\_Y\_loss: 0.1906
+Epoch 15/50
+300/300 [==============================] - ETA: 0s - G\_loss: 3.3659 - F\_loss:
+3.6901 - D\_X\_loss: 0.1793 - D\_Y\_loss: 0.1844
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_27_31.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+300/300 [==============================] - 2885s 10s/step - G\_loss: 3.3633 -
+F\_loss: 3.6890 - D\_X\_loss: 0.1792 - D\_Y\_loss: 0.1848
+Epoch 16/50
+300/300 [==============================] - ETA: 0s - G\_loss: 3.3396 - F\_loss:
+3.6375 - D\_X\_loss: 0.1763 - D\_Y\_loss: 0.1816
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_27_33.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+300/300 [==============================] - 2898s 10s/step - G\_loss: 3.3374 -
+F\_loss: 3.6364 - D\_X\_loss: 0.1763 - D\_Y\_loss: 0.1820
+Epoch 17/50
+300/300 [==============================] - ETA: 0s - G\_loss: 3.3514 - F\_loss:
+3.6196 - D\_X\_loss: 0.1858 - D\_Y\_loss: 0.1855
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_27_35.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+300/300 [==============================] - 2898s 10s/step - G\_loss: 3.3488 -
+F\_loss: 3.6193 - D\_X\_loss: 0.1858 - D\_Y\_loss: 0.1858
+Epoch 18/50
+300/300 [==============================] - ETA: 0s - G\_loss: 3.3380 - F\_loss:
+3.6765 - D\_X\_loss: 0.1780 - D\_Y\_loss: 0.1854
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_27_37.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+300/300 [==============================] - 2902s 10s/step - G\_loss: 3.3349 -
+F\_loss: 3.6757 - D\_X\_loss: 0.1780 - D\_Y\_loss: 0.1859
+Epoch 19/50
+300/300 [==============================] - ETA: 0s - G\_loss: 3.2915 - F\_loss:
+3.6334 - D\_X\_loss: 0.1736 - D\_Y\_loss: 0.1870
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_27_39.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+300/300 [==============================] - 2908s 10s/step - G\_loss: 3.2890 -
+F\_loss: 3.6354 - D\_X\_loss: 0.1733 - D\_Y\_loss: 0.1873
+Epoch 20/50
+300/300 [==============================] - ETA: 0s - G\_loss: 3.2816 - F\_loss:
+3.6971 - D\_X\_loss: 0.1748 - D\_Y\_loss: 0.1905
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_27_41.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+300/300 [==============================] - 2917s 10s/step - G\_loss: 3.2792 -
+F\_loss: 3.7008 - D\_X\_loss: 0.1748 - D\_Y\_loss: 0.1907
+Epoch 21/50
+300/300 [==============================] - ETA: 0s - G\_loss: 3.2530 - F\_loss:
+3.6601 - D\_X\_loss: 0.1751 - D\_Y\_loss: 0.1992
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_27_43.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+300/300 [==============================] - 2918s 10s/step - G\_loss: 3.2514 -
+F\_loss: 3.6616 - D\_X\_loss: 0.1750 - D\_Y\_loss: 0.1995
+Epoch 22/50
+300/300 [==============================] - ETA: 0s - G\_loss: 3.2749 - F\_loss:
+3.7435 - D\_X\_loss: 0.1754 - D\_Y\_loss: 0.1956
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_27_45.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+300/300 [==============================] - 2926s 10s/step - G\_loss: 3.2723 -
+F\_loss: 3.7481 - D\_X\_loss: 0.1755 - D\_Y\_loss: 0.1960
+Epoch 23/50
+300/300 [==============================] - ETA: 0s - G\_loss: 3.2288 - F\_loss:
+3.7591 - D\_X\_loss: 0.1722 - D\_Y\_loss: 0.1985
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_27_47.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+300/300 [==============================] - 2940s 10s/step - G\_loss: 3.2261 -
+F\_loss: 3.7635 - D\_X\_loss: 0.1721 - D\_Y\_loss: 0.1989
+Epoch 24/50
+300/300 [==============================] - ETA: 0s - G\_loss: 3.2039 - F\_loss:
+3.7172 - D\_X\_loss: 0.1654 - D\_Y\_loss: 0.1954
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_27_49.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+WARNING:tensorflow:Model's `\_\_init\_\_()` arguments contain non-serializable
+objects. Please implement a `get\_config()` method in the subclassed Model for
+proper saving and loading. Defaulting to empty config.
+300/300 [==============================] - 3116s 10s/step - G\_loss: 3.2020 -
+F\_loss: 3.7212 - D\_X\_loss: 0.1655 - D\_Y\_loss: 0.1956
+Epoch 25/50
+ 53/300 [====>{\ldots}] - ETA: 42:42 - G\_loss: 3.3745 - F\_loss:
+3.6248 - D\_X\_loss: 0.1806 - D\_Y\_loss: 0.2002
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}, frame=single, framerule=2mm, rulecolor=\color{outerrorbackground}]
+\textcolor{ansi-red}{---------------------------------------------------------------------------}
+\textcolor{ansi-red}{KeyboardInterrupt}                         Traceback (most recent call last)
+Cell \textcolor{ansi-green}{In[19], line 4}
+\textcolor{ansi-green-intense}{\textbf{      1}} callbacks \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=} [GANMonitor(), keras\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}callbacks\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}ModelCheckpoint(\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{"}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{save\_at\_}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,95,135}}{\textbf{\{epoch\}}}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{.keras}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{"}), CSVLogger(\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{'}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{CycleGAN\_training.csv}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{'}),
+\textcolor{ansi-green-intense}{\textbf{      2}}              keras\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}callbacks\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}ModelCheckpoint(filepath\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{"}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{./training\_checkpoints/checkpoint\_}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,95,135}}{\textbf{\{epoch\}}}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{.keras}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{"}, save\_weights\_only\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{True}})]
+\textcolor{ansi-green}{----> 4} \setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{cycle\_gan\_model\strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{.\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{fit\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{(\strut}
+\textcolor{ansi-green-intense}{\textbf{      5}} \setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{    \strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{tf\strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{.\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{data\strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{.\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{Dataset\strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{.\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{zip\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{(\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{(\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{photo\_ds\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{,\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{ \strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{monet\_ds\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{)\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{)\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{,\strut}
+\textcolor{ansi-green-intense}{\textbf{      6}} \setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{    \strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{epochs\strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{=\strut}}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{50\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{,\strut}
+\textcolor{ansi-green-intense}{\textbf{      7}} \setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{    \strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{callbacks\strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{=\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{callbacks\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{,\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{)\strut}
+
+File \textcolor{ansi-green}{/opt/anaconda3/envs/py39/lib/python3.9/site-packages/keras/src/utils/traceback\_utils.py:65}, in \textcolor{ansi-cyan}{filter\_traceback.<locals>.error\_handler}\textcolor{ansi-blue}{(*args, **kwargs)}
+\textcolor{ansi-green-intense}{\textbf{     63}} filtered\_tb \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{None}}
+\textcolor{ansi-green-intense}{\textbf{     64}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{try}}:
+\textcolor{ansi-green}{---> 65}     \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{return}} \setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{fn\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{(\strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{*\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{args\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{,\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{ \strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{*\strut}}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{*\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{kwargs\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{)\strut}
+\textcolor{ansi-green-intense}{\textbf{     66}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{except}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{215,95,95}}{\textbf{Exception}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{as}} e:
+\textcolor{ansi-green-intense}{\textbf{     67}}     filtered\_tb \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=} \_process\_traceback\_frames(e\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}\_\_traceback\_\_)
+
+File \textcolor{ansi-green}{/opt/anaconda3/envs/py39/lib/python3.9/site-packages/keras/src/engine/training.py:1807}, in \textcolor{ansi-cyan}{Model.fit}\textcolor{ansi-blue}{(self, x, y, batch\_size, epochs, verbose, callbacks, validation\_split, validation\_data, shuffle, class\_weight, sample\_weight, initial\_epoch, steps\_per\_epoch, validation\_steps, validation\_batch\_size, validation\_freq, max\_queue\_size, workers, use\_multiprocessing)}
+\textcolor{ansi-green-intense}{\textbf{   1799}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{with}} tf\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}profiler\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}experimental\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}Trace(
+\textcolor{ansi-green-intense}{\textbf{   1800}}     \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{"}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{train}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{"},
+\textcolor{ansi-green-intense}{\textbf{   1801}}     epoch\_num\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=}epoch,
+\textcolor{ansi-green}{   ({\ldots})}
+\textcolor{ansi-green-intense}{\textbf{   1804}}     \_r\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{1},
+\textcolor{ansi-green-intense}{\textbf{   1805}} ):
+\textcolor{ansi-green-intense}{\textbf{   1806}}     callbacks\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}on\_train\_batch\_begin(step)
+\textcolor{ansi-green}{-> 1807}     tmp\_logs \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{self\strut}}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{.\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{train\_function\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{(\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{iterator\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{)\strut}
+\textcolor{ansi-green-intense}{\textbf{   1808}}     \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{if}} data\_handler\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}should\_sync:
+\textcolor{ansi-green-intense}{\textbf{   1809}}         context\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}async\_wait()
+
+File \textcolor{ansi-green}{/opt/anaconda3/envs/py39/lib/python3.9/site-packages/tensorflow/python/util/traceback\_utils.py:150}, in \textcolor{ansi-cyan}{filter\_traceback.<locals>.error\_handler}\textcolor{ansi-blue}{(*args, **kwargs)}
+\textcolor{ansi-green-intense}{\textbf{    148}} filtered\_tb \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{None}}
+\textcolor{ansi-green-intense}{\textbf{    149}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{try}}:
+\textcolor{ansi-green}{--> 150}   \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{return}} \setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{fn\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{(\strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{*\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{args\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{,\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{ \strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{*\strut}}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{*\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{kwargs\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{)\strut}
+\textcolor{ansi-green-intense}{\textbf{    151}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{except}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{215,95,95}}{\textbf{Exception}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{as}} e:
+\textcolor{ansi-green-intense}{\textbf{    152}}   filtered\_tb \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=} \_process\_traceback\_frames(e\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}\_\_traceback\_\_)
+
+File \textcolor{ansi-green}{/opt/anaconda3/envs/py39/lib/python3.9/site-packages/tensorflow/python/eager/polymorphic\_function/polymorphic\_function.py:832}, in \textcolor{ansi-cyan}{Function.\_\_call\_\_}\textcolor{ansi-blue}{(self, *args, **kwds)}
+\textcolor{ansi-green-intense}{\textbf{    829}} compiler \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{"}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{xla}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{"} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{if}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{self}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}\_jit\_compile \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{else}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{"}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{nonXla}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{"}
+\textcolor{ansi-green-intense}{\textbf{    831}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{with}} OptionalXlaContext(\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{self}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}\_jit\_compile):
+\textcolor{ansi-green}{--> 832}   result \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{self\strut}}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{.\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{\_call\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{(\strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{*\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{args\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{,\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{ \strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{*\strut}}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{*\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{kwds\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{)\strut}
+\textcolor{ansi-green-intense}{\textbf{    834}} new\_tracing\_count \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{self}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}experimental\_get\_tracing\_count()
+\textcolor{ansi-green-intense}{\textbf{    835}} without\_tracing \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=} (tracing\_count \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{==} new\_tracing\_count)
+
+File \textcolor{ansi-green}{/opt/anaconda3/envs/py39/lib/python3.9/site-packages/tensorflow/python/eager/polymorphic\_function/polymorphic\_function.py:868}, in \textcolor{ansi-cyan}{Function.\_call}\textcolor{ansi-blue}{(self, *args, **kwds)}
+\textcolor{ansi-green-intense}{\textbf{    865}}   \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{self}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}\_lock\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}release()
+\textcolor{ansi-green-intense}{\textbf{    866}}   \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{95,135,135}}{\# In this case we have created variables on the first call, so we run the}
+\textcolor{ansi-green-intense}{\textbf{    867}}   \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{95,135,135}}{\# defunned version which is guaranteed to never create variables.}
+\textcolor{ansi-green}{--> 868}   \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{return}} \setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{tracing\_compilation\strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{.\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{call\_function\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{(\strut}
+\textcolor{ansi-green-intense}{\textbf{    869}} \setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{      \strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{args\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{,\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{ \strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{kwds\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{,\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{ \strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{self\strut}}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{.\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{\_no\_variable\_creation\_config\strut}
+\textcolor{ansi-green-intense}{\textbf{    870}} \setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{  \strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{)\strut}
+\textcolor{ansi-green-intense}{\textbf{    871}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{elif}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{self}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}\_variable\_creation\_config \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,255}}{\textbf{is}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,255}}{\textbf{not}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{None}}:
+\textcolor{ansi-green-intense}{\textbf{    872}}   \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{95,135,135}}{\# Release the lock early so that multiple threads can perform the call}
+\textcolor{ansi-green-intense}{\textbf{    873}}   \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{95,135,135}}{\# in parallel.}
+\textcolor{ansi-green-intense}{\textbf{    874}}   \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{self}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}\_lock\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}release()
+
+File \textcolor{ansi-green}{/opt/anaconda3/envs/py39/lib/python3.9/site-packages/tensorflow/python/eager/polymorphic\_function/tracing\_compilation.py:139}, in \textcolor{ansi-cyan}{call\_function}\textcolor{ansi-blue}{(args, kwargs, tracing\_options)}
+\textcolor{ansi-green-intense}{\textbf{    137}} bound\_args \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=} function\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}function\_type\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}bind(\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{*}args, \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{*}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{*}kwargs)
+\textcolor{ansi-green-intense}{\textbf{    138}} flat\_inputs \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=} function\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}function\_type\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}unpack\_inputs(bound\_args)
+\textcolor{ansi-green}{--> 139} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{return}} \setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{function\strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{.\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{\_call\_flat\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{(\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{  \strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{95,135,135}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{\# pylint: disable=protected-access\strut}}
+\textcolor{ansi-green-intense}{\textbf{    140}} \setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{    \strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{flat\_inputs\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{,\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{ \strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{captured\_inputs\strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{=\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{function\strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{.\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{captured\_inputs\strut}
+\textcolor{ansi-green-intense}{\textbf{    141}} \setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{)\strut}
+
+File \textcolor{ansi-green}{/opt/anaconda3/envs/py39/lib/python3.9/site-packages/tensorflow/python/eager/polymorphic\_function/concrete\_function.py:1323}, in \textcolor{ansi-cyan}{ConcreteFunction.\_call\_flat}\textcolor{ansi-blue}{(self, tensor\_inputs, captured\_inputs)}
+\textcolor{ansi-green-intense}{\textbf{   1319}} possible\_gradient\_type \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=} gradients\_util\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}PossibleTapeGradientTypes(args)
+\textcolor{ansi-green-intense}{\textbf{   1320}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{if}} (possible\_gradient\_type \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{==} gradients\_util\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}POSSIBLE\_GRADIENT\_TYPES\_NONE
+\textcolor{ansi-green-intense}{\textbf{   1321}}     \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,255}}{\textbf{and}} executing\_eagerly):
+\textcolor{ansi-green-intense}{\textbf{   1322}}   \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{95,135,135}}{\# No tape is watching; skip to running the function.}
+\textcolor{ansi-green}{-> 1323}   \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{return}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{self\strut}}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{.\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{\_inference\_function\strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{.\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{call\_preflattened\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{(\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{args\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{)\strut}
+\textcolor{ansi-green-intense}{\textbf{   1324}} forward\_backward \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{self}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}\_select\_forward\_and\_backward\_functions(
+\textcolor{ansi-green-intense}{\textbf{   1325}}     args,
+\textcolor{ansi-green-intense}{\textbf{   1326}}     possible\_gradient\_type,
+\textcolor{ansi-green-intense}{\textbf{   1327}}     executing\_eagerly)
+\textcolor{ansi-green-intense}{\textbf{   1328}} forward\_function, args\_with\_tangents \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=} forward\_backward\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}forward()
+
+File \textcolor{ansi-green}{/opt/anaconda3/envs/py39/lib/python3.9/site-packages/tensorflow/python/eager/polymorphic\_function/atomic\_function.py:216}, in \textcolor{ansi-cyan}{AtomicFunction.call\_preflattened}\textcolor{ansi-blue}{(self, args)}
+\textcolor{ansi-green-intense}{\textbf{    214}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{def}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,0,255}}{call\_preflattened}(\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{self}, args: Sequence[core\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}Tensor]) \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{-}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{>} Any:
+\textcolor{ansi-green-intense}{\textbf{    215}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{188,188,188}}{  }\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{"""Calls with flattened tensor inputs and returns the structured output."""}
+\textcolor{ansi-green}{--> 216}   flat\_outputs \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{self\strut}}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{.\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{call\_flat\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{(\strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{*\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{args\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{)\strut}
+\textcolor{ansi-green-intense}{\textbf{    217}}   \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{return}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{self}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}function\_type\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}pack\_output(flat\_outputs)
+
+File \textcolor{ansi-green}{/opt/anaconda3/envs/py39/lib/python3.9/site-packages/tensorflow/python/eager/polymorphic\_function/atomic\_function.py:251}, in \textcolor{ansi-cyan}{AtomicFunction.call\_flat}\textcolor{ansi-blue}{(self, *args)}
+\textcolor{ansi-green-intense}{\textbf{    249}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{with}} record\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}stop\_recording():
+\textcolor{ansi-green-intense}{\textbf{    250}}   \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{if}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{self}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}\_bound\_context\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}executing\_eagerly():
+\textcolor{ansi-green}{--> 251}     outputs \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{self\strut}}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{.\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{\_bound\_context\strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{.\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{call\_function\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{(\strut}
+\textcolor{ansi-green-intense}{\textbf{    252}} \setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{        \strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{self\strut}}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{.\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{name\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{,\strut}
+\textcolor{ansi-green-intense}{\textbf{    253}} \setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{        \strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{list\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{(\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{args\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{)\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{,\strut}
+\textcolor{ansi-green-intense}{\textbf{    254}} \setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{        \strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{len\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{(\strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{self\strut}}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{.\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{function\_type\strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{.\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{flat\_outputs\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{)\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{,\strut}
+\textcolor{ansi-green-intense}{\textbf{    255}} \setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{    \strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{)\strut}
+\textcolor{ansi-green-intense}{\textbf{    256}}   \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{else}}:
+\textcolor{ansi-green-intense}{\textbf{    257}}     outputs \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=} make\_call\_op\_in\_graph(
+\textcolor{ansi-green-intense}{\textbf{    258}}         \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{self},
+\textcolor{ansi-green-intense}{\textbf{    259}}         \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{list}(args),
+\textcolor{ansi-green-intense}{\textbf{    260}}         \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{self}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}\_bound\_context\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}function\_call\_options\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}as\_attrs(),
+\textcolor{ansi-green-intense}{\textbf{    261}}     )
+
+File \textcolor{ansi-green}{/opt/anaconda3/envs/py39/lib/python3.9/site-packages/tensorflow/python/eager/context.py:1486}, in \textcolor{ansi-cyan}{Context.call\_function}\textcolor{ansi-blue}{(self, name, tensor\_inputs, num\_outputs)}
+\textcolor{ansi-green-intense}{\textbf{   1484}} cancellation\_context \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=} cancellation\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}context()
+\textcolor{ansi-green-intense}{\textbf{   1485}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{if}} cancellation\_context \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,255}}{\textbf{is}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{None}}:
+\textcolor{ansi-green}{-> 1486}   outputs \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=} \setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{execute\strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{.\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{execute\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{(\strut}
+\textcolor{ansi-green-intense}{\textbf{   1487}} \setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{      \strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{name\strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{.\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{decode\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{(\strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{"\strut}}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{utf-8\strut}}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{"\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{)\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{,\strut}
+\textcolor{ansi-green-intense}{\textbf{   1488}} \setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{      \strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{num\_outputs\strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{=\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{num\_outputs\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{,\strut}
+\textcolor{ansi-green-intense}{\textbf{   1489}} \setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{      \strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{inputs\strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{=\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{tensor\_inputs\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{,\strut}
+\textcolor{ansi-green-intense}{\textbf{   1490}} \setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{      \strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{attrs\strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{=\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{attrs\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{,\strut}
+\textcolor{ansi-green-intense}{\textbf{   1491}} \setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{      \strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{ctx\strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{=\strut}}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{self\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{,\strut}
+\textcolor{ansi-green-intense}{\textbf{   1492}} \setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{  \strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{)\strut}
+\textcolor{ansi-green-intense}{\textbf{   1493}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{else}}:
+\textcolor{ansi-green-intense}{\textbf{   1494}}   outputs \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=} execute\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}execute\_with\_cancellation(
+\textcolor{ansi-green-intense}{\textbf{   1495}}       name\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}decode(\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{"}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{utf-8}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,0}}{"}),
+\textcolor{ansi-green-intense}{\textbf{   1496}}       num\_outputs\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=}num\_outputs,
+\textcolor{ansi-green}{   ({\ldots})}
+\textcolor{ansi-green-intense}{\textbf{   1500}}       cancellation\_manager\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=}cancellation\_context,
+\textcolor{ansi-green-intense}{\textbf{   1501}}   )
+
+File \textcolor{ansi-green}{/opt/anaconda3/envs/py39/lib/python3.9/site-packages/tensorflow/python/eager/execute.py:53}, in \textcolor{ansi-cyan}{quick\_execute}\textcolor{ansi-blue}{(op\_name, num\_outputs, inputs, attrs, ctx, name)}
+\textcolor{ansi-green-intense}{\textbf{     51}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{try}}:
+\textcolor{ansi-green-intense}{\textbf{     52}}   ctx\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}ensure\_initialized()
+\textcolor{ansi-green}{---> 53}   tensors \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{=} \setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{pywrap\_tfe\strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{.\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{TFE\_Py\_Execute\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{(\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{ctx\strut}\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{.\strut}}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{\_handle\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{,\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{ \strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{device\_name\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{,\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{ \strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{op\_name\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{,\strut}
+\textcolor{ansi-green-intense}{\textbf{     54}} \setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{                                      \strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{inputs\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{,\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{ \strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{attrs\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{,\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{ \strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{num\_outputs\strut}\setlength{\fboxsep}{0pt}\colorbox{ansi-yellow}{)\strut}
+\textcolor{ansi-green-intense}{\textbf{     55}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{except}} core\def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{98,98,98}}{.}\_NotOkStatusException \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{as}} e:
+\textcolor{ansi-green-intense}{\textbf{     56}}   \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{if}} name \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,255}}{\textbf{is}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{175,0,255}}{\textbf{not}} \def\tcRGB{\textcolor[RGB]}\expandafter\tcRGB\expandafter{\detokenize{0,135,0}}{\textbf{None}}:
+
+\textcolor{ansi-red}{KeyboardInterrupt}: 
+    \end{Verbatim}
+
+    I stopped the model at 25/50 epochs for time.
+
+    \section{Visualize Results}\label{visualize-results}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{20}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Load the checkpoints}
+\PY{c+c1}{\PYZsh{}weight\PYZus{}file = \PYZdq{}./saved\PYZus{}checkpoints/cyclegan\PYZus{}checkpoints.090\PYZdq{}}
+\PY{c+c1}{\PYZsh{}cycle\PYZus{}gan\PYZus{}model.load\PYZus{}weights(weight\PYZus{}file).expect\PYZus{}partial()}
+\PY{c+c1}{\PYZsh{}print(\PYZdq{}Weights loaded successfully\PYZdq{})}
+
+\PY{n}{\PYZus{}}\PY{p}{,} \PY{n}{ax} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{15}\PY{p}{)}\PY{p}{)}
+\PY{k}{for} \PY{n}{i}\PY{p}{,} \PY{n}{img} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{photo\PYZus{}ds}\PY{o}{.}\PY{n}{take}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+    \PY{n}{prediction} \PY{o}{=} \PY{n}{cycle\PYZus{}gan\PYZus{}model}\PY{o}{.}\PY{n}{gen\PYZus{}G}\PY{p}{(}\PY{n}{img}\PY{p}{,} \PY{n}{training}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{numpy}\PY{p}{(}\PY{p}{)}
+    \PY{n}{prediction} \PY{o}{=} \PY{p}{(}\PY{n}{prediction} \PY{o}{*} \PY{l+m+mf}{127.5} \PY{o}{+} \PY{l+m+mf}{127.5}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}
+    \PY{n}{img} \PY{o}{=} \PY{p}{(}\PY{n}{img}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{*} \PY{l+m+mf}{127.5} \PY{o}{+} \PY{l+m+mf}{127.5}\PY{p}{)}\PY{o}{.}\PY{n}{numpy}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}
+
+    \PY{n}{ax}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{img}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{prediction}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Input image}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Input image}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Translated image}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{off}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{ax}\PY{p}{[}\PY{n}{i}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{off}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{}prediction = keras.utils.array\PYZus{}to\PYZus{}img(prediction)}
+    \PY{c+c1}{\PYZsh{}prediction.save(\PYZdq{}images/predicted\PYZus{}img\PYZus{}\PYZob{}i\PYZcb{}.png\PYZdq{}.format(i=i))}
+\PY{n}{plt}\PY{o}{.}\PY{n}{tight\PYZus{}layout}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_30_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Below I try to plot the training and validation losses (Discriminator X
+\& Y, Generator F \& G losses) but my logging .csv seems to not have
+recorded the validation losses, only training.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{27}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{history}\PY{p}{)}
+\PY{n}{history} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CycleGAN\PYZus{}training.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{history}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{D\PYZus{}X\PYZus{}loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{history}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{val\PYZus{}D\PYZus{}X\PYZus{}loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CylcleGAN D\PYZus{}X\PYZus{}loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Discriminator X\PYZus{}loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{epoch}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{train}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{val}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{loc}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{upper left}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{history}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{D\PYZus{}Y\PYZus{}loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{history}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{val\PYZus{}D\PYZus{}Y\PYZus{}loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CylcleGAN D\PYZus{}Y\PYZus{}loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Discriminator Y\PYZus{}loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{epoch}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{train}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{val}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{loc}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{upper left}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{history}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{F\PYZus{}loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{history}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{val\PYZus{}F\PYZus{}loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CylcleGAN F\PYZus{}loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{F\PYZus{}loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{epoch}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{train}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{val}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{loc}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{upper left}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{history}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{G\PYZus{}loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{history}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{val\PYZus{}G\PYZus{}loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CylcleGAN G\PYZus{}loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{G\PYZus{}loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{epoch}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{train}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{val}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{loc}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{upper left}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+    epoch  D\_X\_loss  D\_Y\_loss    F\_loss    G\_loss  val\_D\_X\_loss  val\_D\_Y\_loss  \textbackslash{}
+0       0  0.019928  0.042167  6.553427  3.145375           NaN           NaN
+1       1  0.090707  0.247564  5.164968  2.456256           NaN           NaN
+2       2  0.052356  0.250806  4.040263  2.221504           NaN           NaN
+3       3  0.332519  0.233674  3.011059  3.014582           NaN           NaN
+4       4  0.096123  0.416639  3.493200  2.633110           NaN           NaN
+5       5  0.270557  0.275753  2.661965  2.864497           NaN           NaN
+6       6  0.181107  0.294041  3.396206  2.706265           NaN           NaN
+7       7  0.284792  0.225872  3.343287  2.999740           NaN           NaN
+8       8  0.165885  0.252900  3.653115  2.699522           NaN           NaN
+9       9  0.190263  0.359151  3.135803  2.745107           NaN           NaN
+10     10  0.308945  0.362603  3.877330  2.616914           NaN           NaN
+11     11  0.148184  0.315285  2.778791  2.739572           NaN           NaN
+12     12  0.193803  0.330606  3.049176  2.911160           NaN           NaN
+13     13  0.145287  0.326180  3.592870  2.578753           NaN           NaN
+14     14  0.143024  0.278828  3.360735  2.574259           NaN           NaN
+15     15  0.157641  0.295198  3.318253  2.679641           NaN           NaN
+16     16  0.160071  0.295735  3.521453  2.583370           NaN           NaN
+17     17  0.174429  0.327594  3.421333  2.415847           NaN           NaN
+18     18  0.093254  0.277560  4.225131  2.528076           NaN           NaN
+19     19  0.163672  0.260860  4.823249  2.563828           NaN           NaN
+20     20  0.145250  0.292853  4.136715  2.784875           NaN           NaN
+21     21  0.195389  0.318039  5.127097  2.483654           NaN           NaN
+22     22  0.149159  0.313347  5.085259  2.401499           NaN           NaN
+23     23  0.187503  0.261293  4.916391  2.643230           NaN           NaN
+
+    val\_F\_loss  val\_G\_loss
+0          NaN         NaN
+1          NaN         NaN
+2          NaN         NaN
+3          NaN         NaN
+4          NaN         NaN
+5          NaN         NaN
+6          NaN         NaN
+7          NaN         NaN
+8          NaN         NaN
+9          NaN         NaN
+10         NaN         NaN
+11         NaN         NaN
+12         NaN         NaN
+13         NaN         NaN
+14         NaN         NaN
+15         NaN         NaN
+16         NaN         NaN
+17         NaN         NaN
+18         NaN         NaN
+19         NaN         NaN
+20         NaN         NaN
+21         NaN         NaN
+22         NaN         NaN
+23         NaN         NaN
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_32_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_32_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_32_3.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_32_4.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \section{Create submission file}\label{create-submission-file}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+ch}{\PYZsh{}! mkdir images}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{28}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{i} \PY{o}{=} \PY{l+m+mi}{1}
+\PY{k}{for} \PY{n}{img} \PY{o+ow}{in} \PY{n}{photo\PYZus{}ds}\PY{p}{:}
+    \PY{n}{prediction} \PY{o}{=} \PY{n}{cycle\PYZus{}gan\PYZus{}model}\PY{o}{.}\PY{n}{gen\PYZus{}G}\PY{p}{(}\PY{n}{img}\PY{p}{,} \PY{n}{training}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{numpy}\PY{p}{(}\PY{p}{)}
+    \PY{n}{prediction} \PY{o}{=} \PY{p}{(}\PY{n}{prediction} \PY{o}{*} \PY{l+m+mf}{127.5} \PY{o}{+} \PY{l+m+mf}{127.5}\PY{p}{)}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{uint8}\PY{p}{)}
+    \PY{n}{im} \PY{o}{=} \PY{n}{PIL}\PY{o}{.}\PY{n}{Image}\PY{o}{.}\PY{n}{fromarray}\PY{p}{(}\PY{n}{prediction}\PY{p}{)}
+    \PY{n}{im}\PY{o}{.}\PY{n}{save}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{images/}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{i}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{.jpg}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{i} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+\end{Verbatim}
+\end{tcolorbox}
+
+    I had already trained my model in jupyter prior to finding out we have
+to submit a notebook through kaggle to submit our .zip of monet
+imitations. I saved my generated images to my local maching and then am
+reading them from the input of my kaggle notebook to be able to submit
+without having to retrain all over (took over 24 hours).
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{29}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{shutil}\PY{o}{.}\PY{n}{make\PYZus{}archive}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{images\PYZus{}zipped}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{zip}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{images}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{29}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+'/Users/emilyhill/Documents/WEEK5\_GANS/images\_zipped.zip'
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}shutil.make\PYZus{}archive(\PYZdq{}/kaggle/working/images\PYZdq{}, \PYZsq{}zip\PYZsq{}, \PYZdq{}/kaggle/input/images\PYZdq{})}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \section{Conclusion}\label{conclusion}
+
+This is my first GAN to make and I relied heavily on keras documentation
+to help. The CycleGAN architecture aimed to map the translation between
+input image (photos) and output image (monet painting). The model
+iterates back and forth generating monet imitations from photos and
+trying to distinguish between real or fake monet paintings to train a
+discriminator and generator. If I had time to go back and redo this I
+would try to spend time understanding why my losses did not converge and
+tuning hyperparemeters. The model performed well with a 71.82 MiFID
+score. I would spend more time tuning hyperparemeters if I had the time.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
